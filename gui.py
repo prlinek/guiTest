@@ -2,7 +2,7 @@ __author__ = "PRL"
 import Tkinter
 import Tkconstants
 import tkFileDialog
-import tkMessageBox
+# import tkMessageBox
 import readdata as rd
 import matplotlib.pyplot as plt  # temporarly here, plot functions will be moved to separate file
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
@@ -29,6 +29,8 @@ class TkDialog(Tkinter.Frame):
         Tkinter.Button(self, text='Load Data', command=self.askopenfilename).pack(**button_opt)
         Tkinter.Button(self, text='Next Data', command=self.nextplot).pack(**button_opt)
         Tkinter.Button(self, text='Previous Data', command=self.prevplot).pack(**button_opt)
+
+        Tkinter.Button(self, text='Play', command=self.playplot).pack(**button_opt)
         # creating new frame for containing plot and toolbar
         frame = Tkinter.Frame(root)
         frame.pack(side=Tkconstants.RIGHT)
@@ -66,48 +68,42 @@ class TkDialog(Tkinter.Frame):
             return rd.x
 
     def showplot(self):
+        global wavelength, magnitude
         self.f.clear()
         self.fig = self.f.add_subplot(111)
+        self.fig.set_ylabel('magnitude')
+        self.fig.set_xlabel('wavelength')
+        self.fig.grid()
         if self.radio_selection.get() == 1:
             magnitude = rd.data[:, 1]
             wavelength = rd.data[:, 0]
-            self.fig.plot(wavelength, magnitude)
             self.fig.set_title("Plot from single file")
-            self.fig.set_ylabel('magnitude')
-            self.fig.set_xlabel('wavelength')
-            self.fig.grid()
-            self.canvas.draw()
         elif self.radio_selection.get() == 2:
-            # for now it shows plot from first chosen data file
             magnitude = rd.x[self.plotnum.get()][:, 1]
             wavelength = rd.x[self.plotnum.get()][:, 0]
-            self.fig.plot(wavelength, magnitude)
             self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
-            self.fig.set_ylabel('magnitude')
-            self.fig.set_xlabel('wavelength')
-            self.fig.grid()
-            self.canvas.draw()
         else:
             print "load data first"
+        self.fig.plot(wavelength, magnitude)
+        self.canvas.draw()
 
     def nextplot(self):
         if self.plotnum.get() + 1 < len(self.list_of_files):
             self.plotnum.set(self.plotnum.get() + 1)
-            self.showplot()
         elif self.plotnum.get() + 1 == len(self.list_of_files):
             self.plotnum.set(0)
-            self.showplot()
+        self.showplot()
 
     def prevplot(self):
         if self.plotnum.get() > 0:
             self.plotnum.set(self.plotnum.get() - 1)
-            self.showplot()
         elif self.plotnum.get() == 0:
             self.plotnum.set(len(self.list_of_files) - 1)
-            self.showplot()
+        self.showplot()
 
-    def spinchange(self):
-        print self.spinnum.get()
+    def playplot(self):
+        for n in self.list_of_files:
+            self.nextplot()
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
