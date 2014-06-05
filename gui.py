@@ -13,6 +13,8 @@ class TkDialog(Tkinter.Frame):
     def __init__(self, root):
         Tkinter.Frame.__init__(self, root)
         root.title("Program")
+        self.plotnum = Tkinter.IntVar()
+        self.plotnum.set(0)
         # options for a button
         button_opt = {'fill': Tkconstants.X, 'padx': 5, 'pady': 1, 'side': Tkconstants.TOP}
         radio_opt = {'fill': Tkconstants.X, 'padx': 5, 'pady': 1, 'side': Tkconstants.TOP}
@@ -24,7 +26,10 @@ class TkDialog(Tkinter.Frame):
         Tkinter.Radiobutton(self, text='Multiple file', variable=self.radio_selection, value=2).pack(**radio_opt)
         # defining buttons
         Tkinter.Button(self, text='Load Data', command=self.askopenfilename).pack(**button_opt)
-        # Tkinter.Button(self, text='Plot Data', command=self.showplot).pack(**button_opt)
+        Tkinter.Button(self, text='next Data', command=self.nextplot).pack(**button_opt)
+        self.spinnum = Tkinter.IntVar()
+        Tkinter.Spinbox(self, from_=0, to=10, wrap=1, textvariable=self.spinnum, command=self.spinchange).pack(**button_opt)
+
         # creating new frame for containing plot and toolbar
         frame = Tkinter.Frame(root)
         frame.pack(side=Tkconstants.RIGHT)
@@ -51,11 +56,12 @@ class TkDialog(Tkinter.Frame):
                 self.showplot()
                 return rd.data
         elif self.radio_selection.get() == 2:
-            list_of_files = tkFileDialog.askopenfilenames(**self.file_opt)
-            list_of_files = list_of_files.split()
-            # print list_of_files
-            rd.readFiles(list_of_files)
-            if list_of_files:
+            self.list_of_files = tkFileDialog.askopenfilenames(**self.file_opt)
+            self.list_of_files = self.list_of_files.split()
+            print self.list_of_files[0]
+            rd.readFiles(self.list_of_files)
+            if self.list_of_files:
+                self.plotnum.set(0)
                 self.showplot()
             return rd.x
 
@@ -73,12 +79,12 @@ class TkDialog(Tkinter.Frame):
             self.canvas.draw()
         elif self.radio_selection.get() == 2:
             # for now it shows plot from first chosen data file
-            magnitude = rd.x[0][:, 1]
-            wavelength = rd.x[0][:, 0]
+            magnitude = rd.x[self.plotnum.get()][:, 1]
+            wavelength = rd.x[self.plotnum.get()][:, 0]
             self.f.clear()
             self.fig = self.f.add_subplot(111)
-            self.fig.plot(wavelength, magnitude)
-            self.fig.set_title("Plot from first file")
+            self.pl = self.fig.plot(wavelength, magnitude)
+            self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
             self.fig.set_ylabel('magnitude')
             self.fig.set_xlabel('wavelength')
             self.fig.grid()
@@ -88,7 +94,15 @@ class TkDialog(Tkinter.Frame):
             print "load data first"
 
     def nextplot(self):
-        pass
+        if self.plotnum.get() + 1 < len(self.list_of_files):
+            self.plotnum.set(self.plotnum.get() + 1)
+            self.showplot()
+        elif self.plotnum.get() + 1 == len(self.list_of_files):
+             self.plotnum.set(0)
+             self.showplot()
+
+    def spinchange(self):
+        print self.spinnum.get()
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
