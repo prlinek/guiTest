@@ -2,12 +2,12 @@ __author__ = "PRL"
 import Tkinter
 import Tkconstants
 import tkFileDialog
-# import tkMessageBox
 import readdata as rd
 import matplotlib.pyplot as plt  # temporarly here, plot functions will be moved to separate file
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-# import time
-
+import scipy.signal as s
+import numpy as np
+import peakdet as pd
 
 class TkDialog(Tkinter.Frame):
 
@@ -74,6 +74,7 @@ class TkDialog(Tkinter.Frame):
                 self.prevbtn.config(state=Tkconstants.DISABLED)
                 self.playbtn.config(state=Tkconstants.DISABLED)
                 self.pausebtn.config(state=Tkconstants.DISABLED)
+                # print len(rd.data[:, 1])
                 return rd.data
         elif self.radio_selection.get() == 2:
             self.list_of_files = tkFileDialog.askopenfilenames(**self.file_opt)
@@ -99,13 +100,19 @@ class TkDialog(Tkinter.Frame):
             magnitude = rd.data[:, 1]
             wavelength = rd.data[:, 0]
             self.fig.set_title("Plot from single file")
+            d = rd.data[:, 1]
+            p = s.find_peaks_cwt(d, np.arange(1, 10), gap_thresh=5)
+            peaks = np.zeros(len(rd.data))
+            for k in p:
+                peaks[k] = rd.data[k, 1]
+
         elif self.radio_selection.get() == 2:
             magnitude = rd.x[self.plotnum.get()][:, 1]
             wavelength = rd.x[self.plotnum.get()][:, 0]
             self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
         else:
             print "load data first"
-        self.fig.plot(wavelength, magnitude)
+        self.fig.plot(wavelength, magnitude, 'b', wavelength, peaks, 'rs')
         self.canvas.draw()
 
     def nextplot(self):
@@ -114,6 +121,7 @@ class TkDialog(Tkinter.Frame):
         elif self.plotnum.get() + 1 == len(self.list_of_files):
             self.plotnum.set(0)
         self.showplot()
+
 
     def prevplot(self):
         if self.plotnum.get() > 0:
