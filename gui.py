@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt  # temporarly here, plot functions will be moved
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 import scipy.signal as s
 import numpy as np
-import peakdet as pd
+import peakdetect as pd
+
 
 class TkDialog(Tkinter.Frame):
 
@@ -100,19 +101,60 @@ class TkDialog(Tkinter.Frame):
             magnitude = rd.data[:, 1]
             wavelength = rd.data[:, 0]
             self.fig.set_title("Plot from single file")
-            d = rd.data[:, 1]
-            p = s.find_peaks_cwt(d, np.arange(1, 10), gap_thresh=5)
-            peaks = np.zeros(len(rd.data))
-            for k in p:
-                peaks[k] = rd.data[k, 1]
+            # d = rd.data[:, 1]
+            # calling function for peak detection
+            # p = s.find_peaks_cwt(d, np.arange(1, 30), gap_thresh=15)
+            # pk = pd.peakdetect(rd.data[:, 1], rd.data[:, 0])
+
+            # creating peak vector of zeroes
+            # peaks = np.zeros(len(rd.data))
+            # peak_pos = []
+            # peak_val = []
+            # # for all indices k obtained from function 'find_peaks_cwt' assign values of data to peaks
+            # for k in p:
+            #     # peaks[k] = rd.data[k, 1]
+            #     peak_pos.append(rd.data[k, 0])
+            #     peak_val.append(rd.data[k, 1])
+            # self.fig.plot(wavelength, magnitude, 'b', peak_pos, peak_val, 'rs')
+            _max, _min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], 20, 0.30)
+
+            xm = [p[0] for p in _max]
+            ym = [p[1] for p in _max]
+            xn = [p[0] for p in _min]
+            yn = [p[1] for p in _min]
+
+            self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
 
         elif self.radio_selection.get() == 2:
             magnitude = rd.x[self.plotnum.get()][:, 1]
             wavelength = rd.x[self.plotnum.get()][:, 0]
             self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
+
+            # peaks = []
+            # peak_pos = []
+            # peak_val = []
+            # for z in self.list_of_files:
+            #     d = rd.x[self.plotnum.get()][:, 1]
+            #     p = s.find_peaks_cwt(d, np.arange(1, 10), gap_thresh=5)
+            #     peaks.append(p)
+            # for k in peaks[self.plotnum.get()]:
+            #     peak_pos.append(rd.x[self.plotnum.get()][k, 0])
+            #     peak_val.append(rd.x[self.plotnum.get()][k, 1])
+            # self.fig.plot(wavelength, magnitude, 'b', peak_pos, peak_val, 'rs')
+
+            _max, _min = pd.peakdetect(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0], 20, 0.30)
+
+            xm = [p[0] for p in _max]
+            ym = [p[1] for p in _max]
+            xn = [p[0] for p in _min]
+            yn = [p[1] for p in _min]
+
+            self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
+
         else:
             print "load data first"
-        self.fig.plot(wavelength, magnitude, 'b', wavelength, peaks, 'rs')
+
+        # self.fig.plot(wavelength, magnitude)
         self.canvas.draw()
 
     def nextplot(self):
