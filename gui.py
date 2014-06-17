@@ -5,9 +5,7 @@ import tkFileDialog
 import readdata as rd
 import matplotlib.pyplot as plt  # temporarly here, plot functions will be moved to separate file
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-import numpy as np
 import peakdetect as pd
-import time
 
 
 class TkDialog(Tkinter.Frame):
@@ -41,11 +39,18 @@ class TkDialog(Tkinter.Frame):
         self.pausebtn = Tkinter.Button(self, text='Pause', command=self.pauseplot)
         self.pausebtn.pack(**button_opt)
 
+        self.peak_opt = Tkinter.IntVar()
+        self.peak_opt.set(0)
+        self.labelframe = Tkinter.LabelFrame(self, text='Peak detection')
+        self.labelframe.pack()
+        self.radio1 = Tkinter.Radiobutton(self.labelframe, text='none', variable=self.peak_opt, value=0, command=self.showpeaks)
+        self.radio1.pack()
+        self.radio2 = Tkinter.Radiobutton(self.labelframe, text='peakdet1', variable=self.peak_opt, value=1, command=self.showpeaks)
+        self.radio2.pack()
+
         if self.radio_selection.get() == 1:
-            self.nextbtn.config(state=Tkconstants.DISABLED)
-            self.prevbtn.config(state=Tkconstants.DISABLED)
-            self.playbtn.config(state=Tkconstants.DISABLED)
-            self.pausebtn.config(state=Tkconstants.DISABLED)
+            self.disableButtons()
+
         # creating new frame for containing plot and toolbar
         frame = Tkinter.Frame(root)
         frame.pack(side=Tkconstants.RIGHT)
@@ -70,11 +75,7 @@ class TkDialog(Tkinter.Frame):
             if filename:
                 rd.readFile(filename)
                 self.showplot()
-                self.nextbtn.config(state=Tkconstants.DISABLED)
-                self.prevbtn.config(state=Tkconstants.DISABLED)
-                self.playbtn.config(state=Tkconstants.DISABLED)
-                self.pausebtn.config(state=Tkconstants.DISABLED)
-                # print len(rd.data[:, 1])
+                self.disableButtons()
                 return rd.data
         elif self.radio_selection.get() == 2:
             self.list_of_files = tkFileDialog.askopenfilenames(**self.file_opt)
@@ -83,11 +84,20 @@ class TkDialog(Tkinter.Frame):
             if self.list_of_files:
                 self.plotnum.set(0)
                 self.showplot()
-                self.nextbtn.config(state=Tkconstants.NORMAL)
-                self.prevbtn.config(state=Tkconstants.NORMAL)
-                self.playbtn.config(state=Tkconstants.NORMAL)
-                self.pausebtn.config(state=Tkconstants.NORMAL)
+                self.enableButtons()
             return rd.x
+
+    def disableButtons(self):
+        self.nextbtn.config(state=Tkconstants.DISABLED)
+        self.prevbtn.config(state=Tkconstants.DISABLED)
+        self.playbtn.config(state=Tkconstants.DISABLED)
+        self.pausebtn.config(state=Tkconstants.DISABLED)
+
+    def enableButtons(self):
+        self.nextbtn.config(state=Tkconstants.NORMAL)
+        self.prevbtn.config(state=Tkconstants.NORMAL)
+        self.playbtn.config(state=Tkconstants.NORMAL)
+        self.pausebtn.config(state=Tkconstants.NORMAL)
 
     def showplot(self):
         global wavelength, magnitude
@@ -100,9 +110,16 @@ class TkDialog(Tkinter.Frame):
             magnitude = rd.data[:, 1]
             wavelength = rd.data[:, 0]
             self.fig.set_title("Plot from single file")
-
             self.peakdet1_setdata_single()
             self.peakdet1_showdata()
+
+            # if self.peak_opt.get() == 1:
+            #     self.peakdet1_setdata_single()
+            #     self.peakdet1_showdata()
+            # elif self.peak_opt.get() == 0:
+            #     self.fig.plot(wavelength, magnitude)
+            #     self.canvas.draw()
+            # self.fig.plot(wavelength, magnitude, 'b')
 
         elif self.radio_selection.get() == 2:
             magnitude = rd.x[self.plotnum.get()][:, 1]
@@ -111,11 +128,30 @@ class TkDialog(Tkinter.Frame):
 
             self.peakdet1_setdata_multi()
             self.peakdet1_showdata()
+            # self.fig.plot(wavelength, magnitude, 'b')
+
+            print self.plotnum.get()
 
         else:
             print "load data first"
 
         self.canvas.draw()
+
+    def showpeaks(self):
+        if self.peak_opt.get() == 1 and self.radio_selection.get() == 1:
+            self.peakdet1_setdata_single()
+            self.peakdet1_showdata()
+        elif self.peak_opt.get() == 1 and self.radio_selection.get() == 2:
+            self.peakdet1_setdata_multi()
+            self.peakdet1_showdata()
+        elif self.peak_opt.get() == 0:
+            # self.fig.clear()
+            self.fig.plot(wavelength, magnitude)
+            # self.fig = self.f.add_subplot(111)
+            # self.fig.set_ylabel('magnitude')
+            # self.fig.set_xlabel('wavelength')
+            # self.fig.grid()
+            self.canvas.draw()
 
     def nextplot(self):
         if self.plotnum.get() + 1 < len(self.list_of_files):
@@ -132,8 +168,7 @@ class TkDialog(Tkinter.Frame):
         self.showplot()
 
     def playplot(self):
-        # if self.playcheck.get() == 1:
-        self.playcheck.set(0)
+        # self.playcheck.set(0)
         self.playbtn.config(state=Tkconstants.DISABLED)
         self.nextbtn.config(state=Tkconstants.DISABLED)
         self.prevbtn.config(state=Tkconstants.DISABLED)
@@ -142,21 +177,16 @@ class TkDialog(Tkinter.Frame):
                 if stat.get():
                     self.nextplot()
                 else:
-                # if self.playcheck.get() == 1:
-                #     self.playcheck.set(0)
                     stat.set(True)
                     break
                 root.update()
 
-            self.playbtn.config(state=Tkconstants.NORMAL)
-            self.nextbtn.config(state=Tkconstants.NORMAL)
-            self.prevbtn.config(state=Tkconstants.NORMAL)
+        self.playbtn.config(state=Tkconstants.NORMAL)
+        self.nextbtn.config(state=Tkconstants.NORMAL)
+        self.prevbtn.config(state=Tkconstants.NORMAL)
 
     def pauseplot(self):
-        # pass
-        # self.playcheck.set(1)
         stat.set(False)
-        # print self.playcheck.get()
 
     def peakdet1_setdata_single(self):
         self._max, self._min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], 20, 0.30)
@@ -170,6 +200,8 @@ class TkDialog(Tkinter.Frame):
         xn = [p[0] for p in self._min]
         yn = [p[1] for p in self._min]
 
+        # self.fig.plot(xm, ym, 'rs', xn, yn, 'go')
+        # self.canvas.draw()
         self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
 
 if __name__ == '__main__':

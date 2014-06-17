@@ -26,8 +26,8 @@
       <file leaf-file-name="gui.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="5.355372" vertical-offset="691" max-vertical-offset="3145">
-              <caret line="155" column="14" selection-start-line="155" selection-start-column="14" selection-end-line="155" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.43801653" vertical-offset="2374" max-vertical-offset="3689">
+              <caret line="149" column="48" selection-start-line="149" selection-start-column="48" selection-end-line="149" selection-end-column="48" />
               <folding>
                 <element signature="e#19#33#0" expanded="true" />
               </folding>
@@ -552,8 +552,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="5.355372" vertical-offset="691" max-vertical-offset="3145">
-          <caret line="155" column="14" selection-start-line="155" selection-start-column="14" selection-end-line="155" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.43801653" vertical-offset="2374" max-vertical-offset="3689">
+          <caret line="149" column="48" selection-start-line="149" selection-start-column="48" selection-end-line="149" selection-end-column="48" />
           <folding>
             <element signature="e#19#33#0" expanded="true" />
           </folding>
