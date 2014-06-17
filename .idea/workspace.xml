@@ -23,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="gui.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="gui.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2878" max-vertical-offset="3553">
-              <caret line="187" column="35" selection-start-line="187" selection-start-column="35" selection-end-line="187" selection-end-column="35" />
+            <state vertical-scroll-proportion="5.355372" vertical-offset="691" max-vertical-offset="3145">
+              <caret line="155" column="14" selection-start-line="155" selection-start-column="14" selection-end-line="155" selection-end-column="14" />
               <folding>
                 <element signature="e#19#33#0" expanded="true" />
               </folding>
@@ -47,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="peakdetect.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="peakdetect.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/peakdetect.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60881543" vertical-offset="0" max-vertical-offset="1768">
-              <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1768">
+              <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -69,8 +69,8 @@
       <list>
         <option value="$PROJECT_DIR$/readdata.py" />
         <option value="$PROJECT_DIR$/peakdet.py" />
-        <option value="$PROJECT_DIR$/gui.py" />
         <option value="$PROJECT_DIR$/peakdetect.py" />
+        <option value="$PROJECT_DIR$/gui.py" />
       </list>
     </option>
   </component>
@@ -542,21 +542,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gui.py">
+    <entry file="file://$PROJECT_DIR$/peakdetect.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2878" max-vertical-offset="3553">
-          <caret line="187" column="35" selection-start-line="187" selection-start-column="35" selection-end-line="187" selection-end-column="35" />
-          <folding>
-            <element signature="e#19#33#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1768">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="15" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/peakdetect.py">
+    <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60881543" vertical-offset="0" max-vertical-offset="1768">
-          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
-          <folding />
+        <state vertical-scroll-proportion="5.355372" vertical-offset="691" max-vertical-offset="3145">
+          <caret line="155" column="14" selection-start-line="155" selection-start-column="14" selection-end-line="155" selection-end-column="14" />
+          <folding>
+            <element signature="e#19#33#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

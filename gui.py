@@ -5,9 +5,9 @@ import tkFileDialog
 import readdata as rd
 import matplotlib.pyplot as plt  # temporarly here, plot functions will be moved to separate file
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-import scipy.signal as s
 import numpy as np
 import peakdetect as pd
+import time
 
 
 class TkDialog(Tkinter.Frame):
@@ -35,7 +35,6 @@ class TkDialog(Tkinter.Frame):
         self.prevbtn.pack(**button_opt)
 
         self.playcheck = Tkinter.IntVar(0)
-        # self.checkbut = Tkinter.Checkbutton(self, text='Play/Pause', command=self.playplot, variable=self.playcheck, onvalue=1, offvalue=0).pack()
         self.playbtn = Tkinter.Button(self, text='Play', command=self.playplot)
         self.playbtn.pack(**button_opt)
         # playbtn.config(state=Tkconstants.DISABLED)
@@ -86,8 +85,8 @@ class TkDialog(Tkinter.Frame):
                 self.showplot()
                 self.nextbtn.config(state=Tkconstants.NORMAL)
                 self.prevbtn.config(state=Tkconstants.NORMAL)
-                # self.playbtn.config(state=Tkconstants.NORMAL)
-                # self.pausebtn.config(state=Tkconstants.NORMAL)
+                self.playbtn.config(state=Tkconstants.NORMAL)
+                self.pausebtn.config(state=Tkconstants.NORMAL)
             return rd.x
 
     def showplot(self):
@@ -101,60 +100,21 @@ class TkDialog(Tkinter.Frame):
             magnitude = rd.data[:, 1]
             wavelength = rd.data[:, 0]
             self.fig.set_title("Plot from single file")
-            # d = rd.data[:, 1]
-            # calling function for peak detection
-            # p = s.find_peaks_cwt(d, np.arange(1, 30), gap_thresh=15)
-            # pk = pd.peakdetect(rd.data[:, 1], rd.data[:, 0])
 
-            # creating peak vector of zeroes
-            # peaks = np.zeros(len(rd.data))
-            # peak_pos = []
-            # peak_val = []
-            # # for all indices k obtained from function 'find_peaks_cwt' assign values of data to peaks
-            # for k in p:
-            #     # peaks[k] = rd.data[k, 1]
-            #     peak_pos.append(rd.data[k, 0])
-            #     peak_val.append(rd.data[k, 1])
-            # self.fig.plot(wavelength, magnitude, 'b', peak_pos, peak_val, 'rs')
-            _max, _min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], 20, 0.30)
-
-            xm = [p[0] for p in _max]
-            ym = [p[1] for p in _max]
-            xn = [p[0] for p in _min]
-            yn = [p[1] for p in _min]
-
-            self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
+            self.peakdet1_setdata_single()
+            self.peakdet1_showdata()
 
         elif self.radio_selection.get() == 2:
             magnitude = rd.x[self.plotnum.get()][:, 1]
             wavelength = rd.x[self.plotnum.get()][:, 0]
             self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
 
-            # peaks = []
-            # peak_pos = []
-            # peak_val = []
-            # for z in self.list_of_files:
-            #     d = rd.x[self.plotnum.get()][:, 1]
-            #     p = s.find_peaks_cwt(d, np.arange(1, 10), gap_thresh=5)
-            #     peaks.append(p)
-            # for k in peaks[self.plotnum.get()]:
-            #     peak_pos.append(rd.x[self.plotnum.get()][k, 0])
-            #     peak_val.append(rd.x[self.plotnum.get()][k, 1])
-            # self.fig.plot(wavelength, magnitude, 'b', peak_pos, peak_val, 'rs')
-
-            _max, _min = pd.peakdetect(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0], 20, 0.30)
-
-            xm = [p[0] for p in _max]
-            ym = [p[1] for p in _max]
-            xn = [p[0] for p in _min]
-            yn = [p[1] for p in _min]
-
-            self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
+            self.peakdet1_setdata_multi()
+            self.peakdet1_showdata()
 
         else:
             print "load data first"
 
-        # self.fig.plot(wavelength, magnitude)
         self.canvas.draw()
 
     def nextplot(self):
@@ -164,7 +124,6 @@ class TkDialog(Tkinter.Frame):
             self.plotnum.set(0)
         self.showplot()
 
-
     def prevplot(self):
         if self.plotnum.get() > 0:
             self.plotnum.set(self.plotnum.get() - 1)
@@ -173,32 +132,49 @@ class TkDialog(Tkinter.Frame):
         self.showplot()
 
     def playplot(self):
-        # # if self.playcheck.get() == 1:
-        # # self.playcheck.set(0)
-        # self.playbtn.config(state=Tkconstants.DISABLED)
-        # self.nextbtn.config(state=Tkconstants.DISABLED)
-        # self.prevbtn.config(state=Tkconstants.DISABLED)
-        # if len(self.list_of_files) != 0:
-        #     for n in self.list_of_files:
-        #         self.nextplot()
-        #         if self.playcheck.get() == 1:
-        #             break
-        #         # else:
-        #         #     continue
-        #         # time.sleep(0.5)
-        #     self.playbtn.config(state=Tkconstants.NORMAL)
-        #     self.nextbtn.config(state=Tkconstants.NORMAL)
-        #     self.prevbtn.config(state=Tkconstants.NORMAL)
-        # else:
-        pass
+        # if self.playcheck.get() == 1:
+        self.playcheck.set(0)
+        self.playbtn.config(state=Tkconstants.DISABLED)
+        self.nextbtn.config(state=Tkconstants.DISABLED)
+        self.prevbtn.config(state=Tkconstants.DISABLED)
+        if len(self.list_of_files) != 0:
+            for n in self.list_of_files:
+                if stat.get():
+                    self.nextplot()
+                else:
+                # if self.playcheck.get() == 1:
+                #     self.playcheck.set(0)
+                    stat.set(True)
+                    break
+                root.update()
+
+            self.playbtn.config(state=Tkconstants.NORMAL)
+            self.nextbtn.config(state=Tkconstants.NORMAL)
+            self.prevbtn.config(state=Tkconstants.NORMAL)
 
     def pauseplot(self):
-        pass
+        # pass
         # self.playcheck.set(1)
+        stat.set(False)
         # print self.playcheck.get()
 
+    def peakdet1_setdata_single(self):
+        self._max, self._min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], 20, 0.30)
+
+    def peakdet1_setdata_multi(self):
+        self._max, self._min = pd.peakdetect(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0], 20, 0.30)
+
+    def peakdet1_showdata(self):
+        xm = [p[0] for p in self._max]
+        ym = [p[1] for p in self._max]
+        xn = [p[0] for p in self._min]
+        yn = [p[1] for p in self._min]
+
+        self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
+    stat = Tkinter.BooleanVar(root)
+    stat.set(True)
     TkDialog(root).pack()
     root.mainloop()
