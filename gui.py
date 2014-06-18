@@ -23,8 +23,12 @@ class TkDialog(Tkinter.Frame):
         self.radio_selection.set(1)
         self.list_of_files = []
         # defining radio buttons
-        Tkinter.Radiobutton(self, text='Single file   ', variable=self.radio_selection, value=1).pack(**radio_opt)
-        Tkinter.Radiobutton(self, text='Multiple file', variable=self.radio_selection, value=2).pack(**radio_opt)
+        self.dataradio1 = Tkinter.Radiobutton(self, text='Single file', variable=self.radio_selection, value=1)
+        self.dataradio1.pack(**radio_opt)
+        self.dataradio1.config(anchor=Tkconstants.W)
+        self.dataradio2 = Tkinter.Radiobutton(self, text='Multiple file', variable=self.radio_selection, value=2)
+        self.dataradio2.pack(**radio_opt)
+        self.dataradio2.config(anchor=Tkconstants.W)
         # defining buttons
         Tkinter.Button(self, text='Load Data', command=self.askopenfilename).pack(**button_opt)
         self.nextbtn = Tkinter.Button(self, text='Next Data', command=self.nextplot)
@@ -42,11 +46,16 @@ class TkDialog(Tkinter.Frame):
         self.peak_opt = Tkinter.IntVar()
         self.peak_opt.set(0)
         self.labelframe = Tkinter.LabelFrame(self, text='Peak detection')
-        self.labelframe.pack()
+        self.labelframe.pack(**radio_opt)
         self.radio1 = Tkinter.Radiobutton(self.labelframe, text='none', variable=self.peak_opt, value=0, command=self.showpeaks)
         self.radio1.pack(**radio_opt)
+        self.radio1.config(anchor=Tkconstants.W)
         self.radio2 = Tkinter.Radiobutton(self.labelframe, text='peakdet1', variable=self.peak_opt, value=1, command=self.showpeaks)
         self.radio2.pack(**radio_opt)
+        self.radio2.config(anchor=Tkconstants.W)
+        self.radio3 = Tkinter.Radiobutton(self.labelframe, text='peakdet2', variable=self.peak_opt, value=2, command=self.showpeaks)
+        self.radio3.pack(**radio_opt)
+        self.radio3.config(anchor=Tkconstants.W)
 
         if self.radio_selection.get() == 1:
             self.disableButtons()
@@ -94,6 +103,7 @@ class TkDialog(Tkinter.Frame):
         self.pausebtn.config(state=Tkconstants.DISABLED)
         self.radio1.config(state=Tkconstants.DISABLED)
         self.radio2.config(state=Tkconstants.DISABLED)
+        self.radio3.config(state=Tkconstants.DISABLED)
 
     def enableButtons(self):
         self.nextbtn.config(state=Tkconstants.NORMAL)
@@ -102,6 +112,7 @@ class TkDialog(Tkinter.Frame):
         self.pausebtn.config(state=Tkconstants.NORMAL)
         self.radio1.config(state=Tkconstants.NORMAL)
         self.radio2.config(state=Tkconstants.NORMAL)
+        self.radio3.config(state=Tkconstants.NORMAL)
 
     def initPlot(self):
         self.f.clear()
@@ -145,6 +156,10 @@ class TkDialog(Tkinter.Frame):
             self.peakdet1_showdata()
         elif self.peak_opt.get() == 0:
             self.showplot()
+        elif self.peak_opt.get() == 2 and self.radio_selection.get() == 1:
+            pass
+        elif self.peak_opt.get() == 2 and self.radio_selection.get() == 2:
+            pass
 
     def nextplot(self):
         if self.plotnum.get() + 1 < len(self.list_of_files):
@@ -206,6 +221,12 @@ class TkDialog(Tkinter.Frame):
 
         self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
         self.canvas.draw()
+
+    def peakdet2_setdata_single(self):
+        self._max, self._min = pd.peakdetect_2(rd.data[:, 1], rd.data[:, 0])
+
+    def peakdet2_setdata_multi(self):
+        self._max, self._min = pd.peakdetect_2(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0])
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
