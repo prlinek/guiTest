@@ -82,7 +82,6 @@ def peakdetect(y_axis, x_axis = None, lookahead = 30, delta=0):
             #    mn = ahead
             #    mnpos = x_axis[np.where(y_axis[index:index+lookahead]==mn)]
 
-
     #Remove the false hit on the first value of the y_axis
     try:
         if dump[0]:

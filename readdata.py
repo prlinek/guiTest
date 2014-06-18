@@ -26,7 +26,6 @@ def readFiles(list_of_files):
     for file_name in list_of_files:
         readFile(file_name)
         x.append(data)
-
     return x
 
 

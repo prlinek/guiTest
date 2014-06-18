@@ -3,7 +3,7 @@ import Tkinter
 import Tkconstants
 import tkFileDialog
 import readdata as rd
-import matplotlib.pyplot as plt  # temporarly here, plot functions will be moved to separate file
+import matplotlib.pyplot as plt  # temporarily here, plot functions will be moved to separate file
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 import peakdetect as pd
 
@@ -32,7 +32,7 @@ class TkDialog(Tkinter.Frame):
         self.prevbtn = Tkinter.Button(self, text='Previous Data', command=self.prevplot)
         self.prevbtn.pack(**button_opt)
 
-        self.playcheck = Tkinter.IntVar(0)
+        # self.playcheck = Tkinter.IntVar(0)
         self.playbtn = Tkinter.Button(self, text='Play', command=self.playplot)
         self.playbtn.pack(**button_opt)
         # playbtn.config(state=Tkconstants.DISABLED)
@@ -44,9 +44,9 @@ class TkDialog(Tkinter.Frame):
         self.labelframe = Tkinter.LabelFrame(self, text='Peak detection')
         self.labelframe.pack()
         self.radio1 = Tkinter.Radiobutton(self.labelframe, text='none', variable=self.peak_opt, value=0, command=self.showpeaks)
-        self.radio1.pack()
+        self.radio1.pack(**radio_opt)
         self.radio2 = Tkinter.Radiobutton(self.labelframe, text='peakdet1', variable=self.peak_opt, value=1, command=self.showpeaks)
-        self.radio2.pack()
+        self.radio2.pack(**radio_opt)
 
         if self.radio_selection.get() == 1:
             self.disableButtons()
@@ -92,12 +92,16 @@ class TkDialog(Tkinter.Frame):
         self.prevbtn.config(state=Tkconstants.DISABLED)
         self.playbtn.config(state=Tkconstants.DISABLED)
         self.pausebtn.config(state=Tkconstants.DISABLED)
+        self.radio1.config(state=Tkconstants.DISABLED)
+        self.radio2.config(state=Tkconstants.DISABLED)
 
     def enableButtons(self):
         self.nextbtn.config(state=Tkconstants.NORMAL)
         self.prevbtn.config(state=Tkconstants.NORMAL)
         self.playbtn.config(state=Tkconstants.NORMAL)
         self.pausebtn.config(state=Tkconstants.NORMAL)
+        self.radio1.config(state=Tkconstants.NORMAL)
+        self.radio2.config(state=Tkconstants.NORMAL)
 
     def initPlot(self):
         self.f.clear()
@@ -158,7 +162,11 @@ class TkDialog(Tkinter.Frame):
             self.plotnum.set(self.plotnum.get() - 1)
         elif self.plotnum.get() == 0:
             self.plotnum.set(len(self.list_of_files) - 1)
-        self.showplot()
+
+        if self.peak_opt.get() == 0:
+            self.showplot()
+        elif self.peak_opt.get() == 1:
+            self.showpeaks()
 
     def playplot(self):
         self.playbtn.config(state=Tkconstants.DISABLED)
@@ -172,6 +180,10 @@ class TkDialog(Tkinter.Frame):
                     stat.set(True)
                     break
                 root.update()
+                if self.plotnum.get() == (len(self.list_of_files) - 1):
+                    stat.set(True)
+                    self.nextplot()
+                    break
 
         self.playbtn.config(state=Tkconstants.NORMAL)
         self.nextbtn.config(state=Tkconstants.NORMAL)
