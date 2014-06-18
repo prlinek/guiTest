@@ -99,38 +99,29 @@ class TkDialog(Tkinter.Frame):
         self.playbtn.config(state=Tkconstants.NORMAL)
         self.pausebtn.config(state=Tkconstants.NORMAL)
 
-    def showplot(self):
-        global wavelength, magnitude
+    def initPlot(self):
         self.f.clear()
         self.fig = self.f.add_subplot(111)
         self.fig.set_ylabel('magnitude')
         self.fig.set_xlabel('wavelength')
         self.fig.grid()
         if self.radio_selection.get() == 1:
+            self.fig.set_title("Plot from single file")
+        elif self.radio_selection.get() == 2:
+            self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
+
+    def showplot(self):
+        global wavelength, magnitude
+        self.initPlot()
+        if self.radio_selection.get() == 1:
             magnitude = rd.data[:, 1]
             wavelength = rd.data[:, 0]
-            self.fig.set_title("Plot from single file")
-            self.peakdet1_setdata_single()
-            self.peakdet1_showdata()
-
-            # if self.peak_opt.get() == 1:
-            #     self.peakdet1_setdata_single()
-            #     self.peakdet1_showdata()
-            # elif self.peak_opt.get() == 0:
-            #     self.fig.plot(wavelength, magnitude)
-            #     self.canvas.draw()
-            # self.fig.plot(wavelength, magnitude, 'b')
+            self.fig.plot(wavelength, magnitude, 'b')
 
         elif self.radio_selection.get() == 2:
             magnitude = rd.x[self.plotnum.get()][:, 1]
             wavelength = rd.x[self.plotnum.get()][:, 0]
-            self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
-
-            self.peakdet1_setdata_multi()
-            self.peakdet1_showdata()
-            # self.fig.plot(wavelength, magnitude, 'b')
-
-            print self.plotnum.get()
+            self.fig.plot(wavelength, magnitude, 'b')
 
         else:
             print "load data first"
@@ -139,26 +130,28 @@ class TkDialog(Tkinter.Frame):
 
     def showpeaks(self):
         if self.peak_opt.get() == 1 and self.radio_selection.get() == 1:
+            self.fig.cla()
+            self.initPlot()
             self.peakdet1_setdata_single()
             self.peakdet1_showdata()
         elif self.peak_opt.get() == 1 and self.radio_selection.get() == 2:
+            self.fig.cla()
+            self.initPlot()
             self.peakdet1_setdata_multi()
             self.peakdet1_showdata()
         elif self.peak_opt.get() == 0:
-            # self.fig.clear()
-            self.fig.plot(wavelength, magnitude)
-            # self.fig = self.f.add_subplot(111)
-            # self.fig.set_ylabel('magnitude')
-            # self.fig.set_xlabel('wavelength')
-            # self.fig.grid()
-            self.canvas.draw()
+            self.showplot()
 
     def nextplot(self):
         if self.plotnum.get() + 1 < len(self.list_of_files):
             self.plotnum.set(self.plotnum.get() + 1)
         elif self.plotnum.get() + 1 == len(self.list_of_files):
             self.plotnum.set(0)
-        self.showplot()
+
+        if self.peak_opt.get() == 0:
+            self.showplot()
+        elif self.peak_opt.get() == 1:
+            self.showpeaks()
 
     def prevplot(self):
         if self.plotnum.get() > 0:
@@ -168,7 +161,6 @@ class TkDialog(Tkinter.Frame):
         self.showplot()
 
     def playplot(self):
-        # self.playcheck.set(0)
         self.playbtn.config(state=Tkconstants.DISABLED)
         self.nextbtn.config(state=Tkconstants.DISABLED)
         self.prevbtn.config(state=Tkconstants.DISABLED)
@@ -200,9 +192,8 @@ class TkDialog(Tkinter.Frame):
         xn = [p[0] for p in self._min]
         yn = [p[1] for p in self._min]
 
-        # self.fig.plot(xm, ym, 'rs', xn, yn, 'go')
-        # self.canvas.draw()
         self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
+        self.canvas.draw()
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
