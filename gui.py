@@ -85,6 +85,9 @@ class TkDialog(Tkinter.Frame):
                 rd.readFile(filename)
                 self.showplot()
                 self.disableButtons()
+                self.radio1.config(state=Tkconstants.NORMAL)
+                self.radio2.config(state=Tkconstants.NORMAL)
+                self.radio3.config(state=Tkconstants.NORMAL)
                 return rd.data
         elif self.radio_selection.get() == 2:
             self.list_of_files = tkFileDialog.askopenfilenames(**self.file_opt)
@@ -157,7 +160,8 @@ class TkDialog(Tkinter.Frame):
         elif self.peak_opt.get() == 0:
             self.showplot()
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 1:
-            pass
+            self.peakdet2_showdata()
+            # pass
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 2:
             pass
 
@@ -227,6 +231,13 @@ class TkDialog(Tkinter.Frame):
 
     def peakdet2_setdata_multi(self):
         self._max, self._min = pd.peakdetect_2(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0])
+
+    def peakdet2_showdata(self):
+        self.pf = pd.PeakFinder(wavelength, magnitude)
+        self.peaks = self.pf.get_peaks()
+        self.fig.plot([p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=10)
+        self.canvas.draw()
+        # print self.peaks
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
