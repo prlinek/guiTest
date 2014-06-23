@@ -118,7 +118,7 @@ class PeakFinder(object):
     #     (this is where the user parameters enter and can be recalculated fast)
     # '''
 
-    def __init__(self, xdata, ydata, resolution=5,):
+    def __init__(self, xdata, ydata, resolution=5, inverse=False):
         xdata = np.array(xdata)
         ydata = np.array(ydata)
         idx = np.argsort(xdata)
@@ -126,6 +126,7 @@ class PeakFinder(object):
         self.ydata = ydata[idx]
         self.resolution = resolution
         self.positions = []
+        self.inverse = inverse
         self._CWT()
         self._find_ridges()
         self._SNR()
@@ -135,7 +136,22 @@ class PeakFinder(object):
     # '''
     #   Create the continous wavelet transform for the dataset.
     # '''
-        self.CWT = MexicanHat(self.ydata,
+    #     self.CWT = MexicanHat(self.ydata,
+    #                     largestscale=1,
+    #                     notes=self.resolution,
+    #                     order=1,
+    #                     scaling='log',
+    #                     )
+        if self.inverse:
+            self.CWT = MexicanHat(self.ydata,
+                        largestscale=1,
+                        notes=self.resolution,
+                        order=1,
+                        scaling='log',
+                        inverse=True
+                        )
+        else:
+            self.CWT = MexicanHat(self.ydata,
                         largestscale=1,
                         notes=self.resolution,
                         order=1,
@@ -393,7 +409,7 @@ class Cwt:
         # utility function to return (integer) log2
         return int(np.log2(float(x)))
 
-    def __init__(self, data, largestscale=1, notes=0, order=2, scaling='log'):
+    def __init__(self, data, largestscale=1, notes=0, order=2, scaling='log', inverse=False):
         # """
         # Continuous wavelet transform of data
         #
@@ -421,8 +437,11 @@ class Cwt:
             currentscale = self.scales[scaleindex]
             self.currentscale = currentscale  # for internal use
             s_omega = omega*currentscale
-            psihat = self.wf(s_omega)
-            psihat = psihat*np.sqrt(2.0*np.pi*currentscale)
+            if inverse:
+                psihat = - self.wf(s_omega)
+            else:
+                psihat = self.wf(s_omega)
+            psihat = psihat*np.sqrt(2.0*np.pi*currentscale)  # if we put '-' before psihat we calculate troughs instead of peaks
             convhat = psihat*datahat
             W = np.fft.ifft(convhat)
             self.cwt[scaleindex, 0:ndata] = W
@@ -489,7 +508,8 @@ class MexicanHat(Cwt):
         #print max(s_omega)
         a = s_omega**2
         b = s_omega**2/2
-        return a*np.exp(-b)/1.1529702
+        return a*np.exp(-b)/1.1529702  # adding minus here -> calculating troughs
+        # return -(a*np.exp(-b)/1.1529702)
         #return s_omega**2*np.exp(-s_omega**2/2.0)/1.1529702
 
 

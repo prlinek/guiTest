@@ -280,14 +280,20 @@ class TkDialog(Tkinter.Frame):
 
     def peakdet2_showdata_single(self):
         self.pf = pd.PeakFinder(wavelength, magnitude)
-        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
+        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
         self.fig.plot(wavelength, magnitude, 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
+        self.tr = pd.PeakFinder(wavelength, magnitude, inverse=True)
+        self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+        self.fig.plot([t[0] for t in self.troughs], [t[2] for t in self.troughs], 'ro', markersize=5)
         self.canvas.draw()
 
     def peakdet2_showdata_multi(self):
         self.pf = pd.PeakFinder(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1])
         self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
         self.fig.plot(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
+        self.tr = pd.PeakFinder(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], inverse=True)
+        self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+        self.fig.plot([t[0] for t in self.troughs], [t[2] for t in self.troughs], 'ro', markersize=5)
         self.canvas.draw()
 
     def pd2_param_update(self):
