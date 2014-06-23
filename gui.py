@@ -56,6 +56,17 @@ class TkDialog(Tkinter.Frame):
         self.radio3.pack(**radio_opt)
         self.radio3.config(anchor=Tkconstants.W)
 
+        # setting parameter for 'peakdet1'
+        self.pd1lf = Tkinter.LabelFrame(self, text='Peakdet1 parameter')
+        self.pd1lf.pack()
+        Tkinter.Label(self.pd1lf, text='Window size').pack()
+        self.win_size = Tkinter.IntVar()
+        self.win_size.set(5)
+        self.win = Tkinter.Entry(self.pd1lf, textvariable=self.win_size)
+        self.win.pack()
+        self.pd1_but = Tkinter.Button(self.pd1lf, text='Update parameter', command=self.pd1_param_update)
+        self.pd1_but.pack(**button_opt)
+
         # setting parameters for 'peakdet2'
         self.pd2lf = Tkinter.LabelFrame(self, text='Peakdet2 parameters')
         self.pd2lf.pack()
@@ -69,8 +80,11 @@ class TkDialog(Tkinter.Frame):
         self.ridg_len.set(15)
         self.ridglen = Tkinter.Entry(self.pd2lf, textvariable=self.ridg_len)
         self.ridglen.pack()
-        Tkinter.Button(self.pd2lf, text='Update parameters', command=self.pd2_param_update).pack(**button_opt)
+        self.pd2_but = Tkinter.Button(self.pd2lf, text='Update parameters', command=self.pd2_param_update)
+        self.pd2_but.pack(**button_opt)
 
+        self.disable_pd1_controls()
+        self.disable_pd2_controls()
         if self.radio_selection.get() == 1:
             self.disableButtons()
 
@@ -166,21 +180,31 @@ class TkDialog(Tkinter.Frame):
             self.initPlot()
             self.peakdet1_setdata_single()
             self.peakdet1_showdata()
+            self.enable_pd1_controls()
+            self.disable_pd2_controls()
         elif self.peak_opt.get() == 1 and self.radio_selection.get() == 2:
             self.fig.cla()
             self.initPlot()
             self.peakdet1_setdata_multi()
             self.peakdet1_showdata()
+            self.enable_pd1_controls()
+            self.disable_pd2_controls()
         elif self.peak_opt.get() == 0:
             self.showplot()
+            self.disable_pd1_controls()
+            self.disable_pd2_controls()
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 1:
             self.fig.cla()
             self.initPlot()
             self.peakdet2_showdata_single()
+            self.enable_pd2_controls()
+            self.disable_pd1_controls()
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 2:
             self.fig.cla()
             self.initPlot()
             self.peakdet2_showdata_multi()
+            self.enable_pd2_controls()
+            self.disable_pd1_controls()
 
     def nextplot(self):
         if self.plotnum.get() + 1 < len(self.list_of_files):
@@ -233,10 +257,14 @@ class TkDialog(Tkinter.Frame):
         stat.set(False)
 
     def peakdet1_setdata_single(self):
-        self._max, self._min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], 20, 0.30)
+        x_res = (rd.data[len(rd.data) - 1, 0] - rd.data[0, 0]) / len(rd.data)
+        lookahead = int(self.win_size.get() / x_res)
+        self._max, self._min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], lookahead, 0.30)
 
     def peakdet1_setdata_multi(self):
-        self._max, self._min = pd.peakdetect(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0], 20, 0.30)
+        x_res = (rd.x[self.plotnum.get()][len(rd.x) - 1, 0] - rd.x[self.plotnum.get()][0, 0]) / len(rd.x)
+        lookahead = int(self.win_size.get() / x_res)
+        self._max, self._min = pd.peakdetect(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0], lookahead, 0.30)
 
     def peakdet1_showdata(self):
         xm = [p[0] for p in self._max]
@@ -246,6 +274,9 @@ class TkDialog(Tkinter.Frame):
 
         self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
         self.canvas.draw()
+
+    def pd1_param_update(self):
+        self.showpeaks()
 
     def peakdet2_showdata_single(self):
         self.pf = pd.PeakFinder(wavelength, magnitude)
@@ -261,6 +292,28 @@ class TkDialog(Tkinter.Frame):
 
     def pd2_param_update(self):
         self.showpeaks()
+
+    def disable_pd1_controls(self):
+        self.win.config(state=Tkconstants.DISABLED)
+        self.pd1_but.config(state=Tkconstants.DISABLED)
+        # pass
+
+    def enable_pd1_controls(self):
+        self.win.config(state=Tkconstants.NORMAL)
+        self.pd1_but.config(state=Tkconstants.NORMAL)
+        # pass
+
+    def disable_pd2_controls(self):
+        self.snr.config(state=Tkconstants.DISABLED)
+        self.ridglen.config(state=Tkconstants.DISABLED)
+        self.pd2_but.config(state=Tkconstants.DISABLED)
+        # pass
+
+    def enable_pd2_controls(self):
+        self.snr.config(state=Tkconstants.NORMAL)
+        self.ridglen.config(state=Tkconstants.NORMAL)
+        self.pd2_but.config(state=Tkconstants.NORMAL)
+        # pass
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
