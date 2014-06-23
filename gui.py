@@ -57,6 +57,20 @@ class TkDialog(Tkinter.Frame):
         self.radio3.pack(**radio_opt)
         self.radio3.config(anchor=Tkconstants.W)
 
+        self.pd2lf = Tkinter.LabelFrame(self, text='Peakdet2 parameters')
+        self.pd2lf.pack()
+        Tkinter.Label(self.pd2lf, text='SNR').pack()
+        self.snr_val = Tkinter.StringVar()
+        self.snr_val.set(2.5)
+        self.snr = Tkinter.Entry(self.pd2lf, textvariable=self.snr_val)
+        self.snr.pack()
+        Tkinter.Label(self.pd2lf, text='Ridge length').pack()
+        self.ridg_len = Tkinter.StringVar()
+        self.ridg_len.set(15)
+        self.ridglen = Tkinter.Entry(self.pd2lf, textvariable=self.ridg_len)
+        self.ridglen.pack()
+        Tkinter.Button(self.pd2lf, text='Update parameters', command=self.pd2_param_update).pack(**button_opt)
+
         if self.radio_selection.get() == 1:
             self.disableButtons()
 
@@ -160,6 +174,7 @@ class TkDialog(Tkinter.Frame):
         elif self.peak_opt.get() == 0:
             self.showplot()
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 1:
+            self.initPlot()
             self.peakdet2_showdata()
             # pass
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 2:
@@ -234,10 +249,15 @@ class TkDialog(Tkinter.Frame):
 
     def peakdet2_showdata(self):
         self.pf = pd.PeakFinder(wavelength, magnitude)
-        self.peaks = self.pf.get_peaks()
-        self.fig.plot([p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=10)
+        self.peaks = self.pf.get_peaks()  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
+        self.fig.plot(wavelength, magnitude, 'b')
+        self.fig.plot([p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
         self.canvas.draw()
-        # print self.peaks
+        # print self.peaks, '\n', p[0], p[2]
+
+    def pd2_param_update(self):
+        # pass
+        self.peakdet2_showdata()
 
 if __name__ == '__main__':
     root = Tkinter.Tk()

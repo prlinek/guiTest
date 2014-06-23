@@ -101,6 +101,10 @@ def peakdetect(y_axis, x_axis = None, lookahead = 30, delta=0):
 #     np.
 #     pass
 
+'''
+Second peak detection method
+'''
+
 class PeakFinder(object):
     # '''
     # Peak finder which can be reevaluated with different thresholds
@@ -125,6 +129,7 @@ class PeakFinder(object):
         self._CWT()
         self._find_ridges()
         self._SNR()
+        # self.visualize()
 
     def _CWT(self):
     # '''
@@ -194,7 +199,7 @@ class PeakFinder(object):
 
     def _SNR(self, minimum_noise_level=0.0001):
     # '''
-    #   Calculate signal to nois ratio. Signal is the highest
+    #   Calculate signal to noise ratio. Signal is the highest
     #   CWT intensity of all scales, noise is the 95% quantile
     #   of the lowest scale WT, which is dominated by noise.
     # '''
@@ -283,14 +288,15 @@ class PeakFinder(object):
             w = w_high-w_low
             info.append(float(abs(w))/1.6)  # estimated peak width
             # intensity
-            info.append(item[3]*1.41/np.sqrt(item[2]))
+            # info.append(item[3]*1.41/np.sqrt(item[2]))  # peak intensity over baseline
+            info.append(self.ydata[item[1]])  # value of data at peak location
             # ridge length
             info.append(item[0])
             # SNR
             info.append(item[4])
             peak_info.append(info)
         # filter for peak width
-        peak_info = filter(lambda item: (item[1]>=min_width)&(item[1]<=max_width),
+        peak_info = filter(lambda item: (item[1] >= min_width) & (item[1] <= max_width),
                      peak_info)
         if double_peak_detection:
             # detect double-peaks by reducing the ridge-length filtering in adjacency of
@@ -341,9 +347,9 @@ class PeakFinder(object):
         peak_info.sort()
         return peak_info
 
-    def visualize(self, snr=2.5,
+    def visualize(self, snr=3,
                 min_width=None, max_width=None,
-                ridge_length=15, double_peak_detection=False,
+                ridge_length=18, double_peak_detection=False,
                 double_peak_reduced_ridge_length=3):
         from pylab import figure, plot, errorbar, pcolormesh, show, legend
         figure(101)
