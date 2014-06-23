@@ -36,13 +36,12 @@ class TkDialog(Tkinter.Frame):
         self.prevbtn = Tkinter.Button(self, text='Previous Data', command=self.prevplot)
         self.prevbtn.pack(**button_opt)
 
-        # self.playcheck = Tkinter.IntVar(0)
         self.playbtn = Tkinter.Button(self, text='Play', command=self.playplot)
         self.playbtn.pack(**button_opt)
-        # playbtn.config(state=Tkconstants.DISABLED)
         self.pausebtn = Tkinter.Button(self, text='Pause', command=self.pauseplot)
         self.pausebtn.pack(**button_opt)
 
+        # selection of peak detection algorithm
         self.peak_opt = Tkinter.IntVar()
         self.peak_opt.set(0)
         self.labelframe = Tkinter.LabelFrame(self, text='Peak detection')
@@ -57,15 +56,16 @@ class TkDialog(Tkinter.Frame):
         self.radio3.pack(**radio_opt)
         self.radio3.config(anchor=Tkconstants.W)
 
+        # setting parameters for 'peakdet2'
         self.pd2lf = Tkinter.LabelFrame(self, text='Peakdet2 parameters')
         self.pd2lf.pack()
         Tkinter.Label(self.pd2lf, text='SNR').pack()
-        self.snr_val = Tkinter.StringVar()
+        self.snr_val = Tkinter.IntVar()
         self.snr_val.set(2.5)
         self.snr = Tkinter.Entry(self.pd2lf, textvariable=self.snr_val)
         self.snr.pack()
         Tkinter.Label(self.pd2lf, text='Ridge length').pack()
-        self.ridg_len = Tkinter.StringVar()
+        self.ridg_len = Tkinter.IntVar()
         self.ridg_len.set(15)
         self.ridglen = Tkinter.Entry(self.pd2lf, textvariable=self.ridg_len)
         self.ridglen.pack()
@@ -174,11 +174,13 @@ class TkDialog(Tkinter.Frame):
         elif self.peak_opt.get() == 0:
             self.showplot()
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 1:
+            self.fig.cla()
             self.initPlot()
-            self.peakdet2_showdata()
-            # pass
+            self.peakdet2_showdata_single()
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 2:
-            pass
+            self.fig.cla()
+            self.initPlot()
+            self.peakdet2_showdata_multi()
 
     def nextplot(self):
         if self.plotnum.get() + 1 < len(self.list_of_files):
@@ -190,6 +192,8 @@ class TkDialog(Tkinter.Frame):
             self.showplot()
         elif self.peak_opt.get() == 1:
             self.showpeaks()
+        elif self.peak_opt.get() == 2:
+            self.showpeaks()
 
     def prevplot(self):
         if self.plotnum.get() > 0:
@@ -200,6 +204,8 @@ class TkDialog(Tkinter.Frame):
         if self.peak_opt.get() == 0:
             self.showplot()
         elif self.peak_opt.get() == 1:
+            self.showpeaks()
+        elif self.peak_opt.get() == 2:
             self.showpeaks()
 
     def playplot(self):
@@ -241,23 +247,20 @@ class TkDialog(Tkinter.Frame):
         self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
         self.canvas.draw()
 
-    def peakdet2_setdata_single(self):
-        self._max, self._min = pd.peakdetect_2(rd.data[:, 1], rd.data[:, 0])
-
-    def peakdet2_setdata_multi(self):
-        self._max, self._min = pd.peakdetect_2(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0])
-
-    def peakdet2_showdata(self):
+    def peakdet2_showdata_single(self):
         self.pf = pd.PeakFinder(wavelength, magnitude)
-        self.peaks = self.pf.get_peaks()  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
-        self.fig.plot(wavelength, magnitude, 'b')
-        self.fig.plot([p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
+        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
+        self.fig.plot(wavelength, magnitude, 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
         self.canvas.draw()
-        # print self.peaks, '\n', p[0], p[2]
+
+    def peakdet2_showdata_multi(self):
+        self.pf = pd.PeakFinder(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1])
+        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
+        self.fig.plot(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
+        self.canvas.draw()
 
     def pd2_param_update(self):
-        # pass
-        self.peakdet2_showdata()
+        self.showpeaks()
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
