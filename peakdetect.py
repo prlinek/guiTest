@@ -508,26 +508,3 @@ class MexicanHat(Cwt):
         return a*np.exp(-b)/1.1529702  # adding minus here -> calculating troughs
         # return -(a*np.exp(-b)/1.1529702)
         #return s_omega**2*np.exp(-s_omega**2/2.0)/1.1529702
-
-
-# if __name__=='__main__':
-#     # example
-#     from pylab import * #@UnusedWildImport
-#     x = np.linspace(-200, 400, 5000)
-#     gauss = lambda x, x0, sigma, I: I*np.exp(-0.5*((x-x0)/sigma)**2)
-#     y = gauss(x, 10, 5, 0.15)+gauss(x, 30, 0.5, 1)+\
-#         gauss(x, 55, 1, 1)+gauss(x, 75, 1, 0.3)+gauss(x, 90, 3, 0.2)
-#     ydata = y+np.random.normal(size=x.shape, scale=0.05)
-#     plot(x, ydata, 'r-', label='Data')
-#     plot(x, y, 'b-', linewidth=3, label='Theory')
-#     pf = PeakFinder(x, ydata)
-#     peaks = pf.get_peaks()
-#     errorbar([p[0] for p in peaks], [p[2] for p in peaks],
-#              xerr=[p[1] for p in peaks], fmt='go',
-#              elinewidth=2, barsabove=True, capsize=6,
-#              label='Peakfinder', markersize=10)
-#     #plot([p[0] for p in peaks], [p[2] for p in peaks],
-#     #         'go', markersize=10,
-#     #     label='Peakfinder')
-#     legend()
-#     show()
