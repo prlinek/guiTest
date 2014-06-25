@@ -6,6 +6,7 @@ import readdata as rd
 import matplotlib.pyplot as plt  # temporarily here, plot functions will be moved to separate file
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 import peakdetect as pd
+import numpy as np
 
 
 class TkDialog(Tkinter.Frame):
@@ -84,6 +85,8 @@ class TkDialog(Tkinter.Frame):
         self.ridglen.pack()
         self.pd2_but = Tkinter.Button(self.pd2lf, text='Update parameters', command=self.pd2_param_update)
         self.pd2_but.pack(**button_opt)
+
+        Tkinter.Button(self, text='Show Intensity plot', command=self.showIntensityPlot).pack()
 
         self.disable_pd1_controls()
         self.disable_pd2_controls()
@@ -359,6 +362,27 @@ class TkDialog(Tkinter.Frame):
         self.ridglen.config(state=Tkconstants.NORMAL)
         self.pd2_but.config(state=Tkconstants.NORMAL)
 
+    def showIntensityPlot(self):
+        # xdata = []
+        xdata = rd.x[0][:, 0]
+        ydata = []
+        zdata = []
+        for t in enumerate(self.list_of_files):
+            # xdata.append(rd.x[t[0]][:, 0])
+            ydata.append(rd.x[t[0]][:, 1])
+            zdata.append(t[0])
+        print xdata, '\n', zdata, '\n', ydata
+        #     print t[0]
+        newxdata, newzdata = np.meshgrid(xdata, zdata)
+        ydata = np.ma.array(ydata)
+        # newcolordata, zz = np.meshgrid(colordata, xdata)
+        plt.figure()
+        plt.title('Intensity plot')
+        plt.xlabel('wavelength')
+        plt.ylabel('Data No.')
+        plt.pcolormesh(newxdata, newzdata, ydata)
+        plt.colorbar()
+        plt.show()
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
