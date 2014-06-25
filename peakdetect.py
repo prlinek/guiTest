@@ -97,9 +97,6 @@ def peakdetect(y_axis, x_axis = None, lookahead = 30, delta=0):
     return [max_peaks, min_peaks]
 
 
-# def peakdetect_2(y_axis, x_axis):
-#     np.
-#     pass
 
 '''
 Second peak detection method
