@@ -44,8 +44,10 @@ class TkDialog(Tkinter.Frame):
         # smoothing checkbox
         self.smoothing = Tkinter.IntVar()
         self.smoothing.set(0)
-        self.smoothed = Tkinter.Checkbutton(self, text='Smoothing', command=self.showFitedData, variable=self.smoothing,
-                                            onvalue=1, ofvalue=0)
+        self.smoothed = Tkinter.Checkbutton(self, text='Smoothing', command=self.updatePlot, variable=self.smoothing,
+                                            onvalue=1, offvalue=0)
+        # self.smoothed = Tkinter.Checkbutton(self, text='Smoothing', variable=self.smoothing,
+        #                                     onvalue=1, offvalue=0)
         self.smoothed.pack()
 
         # selection of peak detection algorithm
@@ -138,7 +140,7 @@ class TkDialog(Tkinter.Frame):
                 self.slide.destroy()
                 self.slide_len = int(0)
                 self.slide = Tkinter.Scale(self.frame, orient='horizontal', length=600, from_=0, to=self.slide_len, command=self.onScale)
-                self.slide.set(0)
+                # self.slide.set(0)
                 self.slide.pack()
                 return rd.data
 
@@ -186,6 +188,19 @@ class TkDialog(Tkinter.Frame):
         elif self.radio_selection.get() == 2:
             self.fig.set_title("Plot from file no. %s" % self.plotnum.get())
 
+    def set_Data(self):
+        if self.radio_selection.get() == 1:
+            self.xdata = rd.data[:, 0]
+            self.ydata = rd.data[:, 1]
+        elif self.radio_selection.get() == 2:
+            self.xdata = rd.x[self.plotnum.get()][:, 0]
+            self.ydata = rd.x[self.plotnum.get()][:, 1]
+
+        if self.smoothing.get() == 1:
+                self.ydata = self.smooth(self.ydata, window_len=51)
+
+        return self.xdata, self.ydata
+
     def showplot(self):
         global wavelength, magnitude
         self.initPlot()
@@ -204,53 +219,108 @@ class TkDialog(Tkinter.Frame):
 
         self.canvas.draw()
 
-    def showpeaks(self):
+    def newShowPlot(self, xdata, ydata):
+        self.initPlot()
+        self.fig.plot(xdata, ydata, 'b')
+        self.canvas.draw()
+
+    # def showpeaks(self):
+    #     if self.peak_opt.get() == 1 and self.radio_selection.get() == 1:
+    #         self.fig.cla()
+    #         self.initPlot()
+    #         # x, y = self.set_Data()
+    #         self.peakdet1_setdata_single()
+    #         self.peakdet1_showdata()
+    #         self.enable_pd1_controls()
+    #         self.disable_pd2_controls()
+    #
+    #     elif self.peak_opt.get() == 1 and self.radio_selection.get() == 2:
+    #         self.fig.cla()
+    #         self.initPlot()
+    #         self.peakdet1_setdata_multi()
+    #         self.peakdet1_showdata()
+    #         self.enable_pd1_controls()
+    #         self.disable_pd2_controls()
+    #
+    #     elif self.peak_opt.get() == 0:
+    #         # x, y = self.set_Data()
+    #         # self.newShowPlot(x, y)
+    #         self.showplot()
+    #         self.disable_pd1_controls()
+    #         self.disable_pd2_controls()
+    #
+    #     elif self.peak_opt.get() == 2 and self.radio_selection.get() == 1:
+    #         self.fig.cla()
+    #         self.initPlot()
+    #         self.peakdet2_showdata_single()
+    #         self.enable_pd2_controls()
+    #         self.disable_pd1_controls()
+    #
+    #     elif self.peak_opt.get() == 2 and self.radio_selection.get() == 2:
+    #         self.fig.cla()
+    #         self.initPlot()
+    #         self.peakdet2_showdata_multi()
+    #         self.enable_pd2_controls()
+    #         self.disable_pd1_controls()
+    #
+    def showpeaks(self, x, y):
         if self.peak_opt.get() == 1 and self.radio_selection.get() == 1:
             self.fig.cla()
             self.initPlot()
-            self.peakdet1_setdata_single()
-            self.peakdet1_showdata()
+            # x, y = self.set_Data()
+            self.peakdet1_setdata_single(x, y)
+            self.peakdet1_showdata(x, y)
             self.enable_pd1_controls()
             self.disable_pd2_controls()
 
         elif self.peak_opt.get() == 1 and self.radio_selection.get() == 2:
             self.fig.cla()
             self.initPlot()
-            self.peakdet1_setdata_multi()
-            self.peakdet1_showdata()
+            # x, y = self.set_Data()
+            self.peakdet1_setdata_multi(x, y)
+            self.peakdet1_showdata(x, y)
             self.enable_pd1_controls()
             self.disable_pd2_controls()
 
         elif self.peak_opt.get() == 0:
-            self.showplot()
+            # x, y = self.set_Data()
+            self.newShowPlot(x, y)
+            # self.showplot()
             self.disable_pd1_controls()
             self.disable_pd2_controls()
 
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 1:
             self.fig.cla()
             self.initPlot()
-            self.peakdet2_showdata_single()
+            # x, y = self.set_Data()
+            self.peakdet2_showdata_single(x, y)
             self.enable_pd2_controls()
             self.disable_pd1_controls()
 
         elif self.peak_opt.get() == 2 and self.radio_selection.get() == 2:
             self.fig.cla()
             self.initPlot()
-            self.peakdet2_showdata_multi()
+            # x, y = self.set_Data()
+            self.peakdet2_showdata_multi(x, y)
             self.enable_pd2_controls()
             self.disable_pd1_controls()
 
-    def onScale(self, scale_val):
-        self.plotnum.set(scale_val)
-        if self.radio_selection.get() == 2:
+    def updatePlot(self):
+        x, y = self.set_Data()
+        if self.radio_selection.get() == 2 or self.radio_selection.get() == 1:
             if self.peak_opt.get() == 0:
-                self.showplot()
+                self.newShowPlot(x, y)
             elif self.peak_opt.get() == 1:
-                self.showpeaks()
+                self.showpeaks(x, y)
             elif self.peak_opt.get() == 2:
-                self.showpeaks()
+                self.showpeaks(x, y)
+        # elif self.radio_selection.get() == 1:
         else:
             pass
+
+    def onScale(self, scale_val):
+        self.plotnum.set(scale_val)
+        self.updatePlot()
 
     def nextplot(self):
         if self.plotnum.get() + 1 < len(self.list_of_files):
@@ -260,12 +330,14 @@ class TkDialog(Tkinter.Frame):
             self.plotnum.set(0)
             self.slide.set(0)
 
+        x, y = self.set_Data()
         if self.peak_opt.get() == 0:
-            self.showplot()
+            # self.showplot()
+            self.newShowPlot(x, y)
         elif self.peak_opt.get() == 1:
-            self.showpeaks()
+            self.showpeaks(x, y)
         elif self.peak_opt.get() == 2:
-            self.showpeaks()
+            self.showpeaks(x, y)
 
     def playplot(self):
         self.playbtn.config(state=Tkconstants.DISABLED)
@@ -288,56 +360,100 @@ class TkDialog(Tkinter.Frame):
     def pauseplot(self):
         stat.set(False)
 
-    def peakdet1_setdata_single(self):
-        x_res = (rd.data[len(rd.data) - 1, 0] - rd.data[0, 0]) / len(rd.data)
-        lookahead = int(self.win_size.get() / x_res)
-        self._max, self._min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], lookahead, 0.30)
+    # def peakdet1_setdata_single(self):
+    #     x_res = (rd.data[len(rd.data) - 1, 0] - rd.data[0, 0]) / len(rd.data)
+    #     # x_res = (xdata[len(xdata) - 1] - xdata[0]) / len(xdata)
+    #     lookahead = int(self.win_size.get() / x_res)
+    #     self._max, self._min = pd.peakdetect(rd.data[:, 1], rd.data[:, 0], lookahead, 0.30)
 
-    def peakdet1_setdata_multi(self):
-        x_res = (rd.x[self.plotnum.get()][len(rd.x) - 1, 0] - rd.x[self.plotnum.get()][0, 0]) / len(rd.x)
+    def peakdet1_setdata_single(self, xdata, ydata):
+        x_res = (xdata[len(xdata) - 1] - xdata[0]) / len(xdata)
         lookahead = int(self.win_size.get() / x_res)
-        self._max, self._min = pd.peakdetect(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0], lookahead,
-                                             0.30)
+        self._max, self._min = pd.peakdetect(ydata, xdata, lookahead, 0.30)
 
-    def peakdet1_showdata(self):
+    # def peakdet1_setdata_multi(self):
+    #     x_res = (rd.x[self.plotnum.get()][len(rd.x) - 1, 0] - rd.x[self.plotnum.get()][0, 0]) / len(rd.x)
+    #     lookahead = int(self.win_size.get() / x_res)
+    #     self._max, self._min = pd.peakdetect(rd.x[self.plotnum.get()][:, 1], rd.x[self.plotnum.get()][:, 0], lookahead,
+    #                                          0.30)
+
+    def peakdet1_setdata_multi(self, xdata, ydata):
+        x_res = (xdata[len(xdata) - 1] - xdata[0]) / len(xdata)
+        lookahead = int(self.win_size.get() / x_res)
+        self._max, self._min = pd.peakdetect(ydata, xdata, lookahead, 0.30)
+
+    # def peakdet1_showdata(self):
+    #     xm = [p[0] for p in self._max]
+    #     ym = [p[1] for p in self._max]
+    #     xn = [p[0] for p in self._min]
+    #     yn = [p[1] for p in self._min]
+    #
+    #     if self.radio_selection.get() == 1:
+    #         self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
+    #     elif self.radio_selection.get() == 2:
+    #         self.fig.plot(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], 'b', xm, ym, 'rs', xn, yn,
+    #                       'go')
+    #     self.canvas.draw()
+
+    def peakdet1_showdata(self, xdata, ydata):
         xm = [p[0] for p in self._max]
         ym = [p[1] for p in self._max]
         xn = [p[0] for p in self._min]
         yn = [p[1] for p in self._min]
 
         if self.radio_selection.get() == 1:
-            self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
+            self.fig.plot(xdata, ydata, 'b', xm, ym, 'rs', xn, yn, 'go')
         elif self.radio_selection.get() == 2:
-            self.fig.plot(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], 'b', xm, ym, 'rs', xn, yn,
-                          'go')
+            self.fig.plot(xdata, ydata, 'b', xm, ym, 'rs', xn, yn, 'go')
         self.canvas.draw()
 
     def pd1_param_update(self):
-        self.showpeaks()
+        x, y = self.set_Data()
+        self.showpeaks(x, y)
 
-    def peakdet2_showdata_single(self):
-        self.pf = pd.PeakFinder(wavelength, magnitude)
+    # def peakdet2_showdata_single(self):
+    #     self.pf = pd.PeakFinder(wavelength, magnitude)
+    #     self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+    #     self.fig.plot(wavelength, magnitude, 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go',
+    #                   markersize=5)
+    #     self.tr = pd.PeakFinder(wavelength, magnitude, inverse=True)
+    #     self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+    #     self.fig.plot([t[0] for t in self.troughs], [t[2] for t in self.troughs], 'ro', markersize=5)
+    #     self.canvas.draw()
+    #
+    def peakdet2_showdata_single(self, xdata, ydata):
+        self.pf = pd.PeakFinder(xdata, ydata)
         self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
-        self.fig.plot(wavelength, magnitude, 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go',
+        self.fig.plot(xdata, ydata, 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go',
                       markersize=5)
-        self.tr = pd.PeakFinder(wavelength, magnitude, inverse=True)
+        self.tr = pd.PeakFinder(xdata, ydata, inverse=True)
         self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
         self.fig.plot([t[0] for t in self.troughs], [t[2] for t in self.troughs], 'ro', markersize=5)
         self.canvas.draw()
 
-    def peakdet2_showdata_multi(self):
-        self.pf = pd.PeakFinder(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1])
-        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(),
-                                       ridge_length=self.ridg_len.get())  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
-        self.fig.plot(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], 'b', [p[0] for p in self.peaks],
-                      [p[2] for p in self.peaks], 'go', markersize=5)
-        self.tr = pd.PeakFinder(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], inverse=True)
+    # def peakdet2_showdata_multi(self):
+    #     self.pf = pd.PeakFinder(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1])
+    #     self.peaks = self.pf.get_peaks(snr=self.snr_val.get(),
+    #                                    ridge_length=self.ridg_len.get())  # snr=self.snr_val.get(), ridge_length=self.ridg_len.get()
+    #     self.fig.plot(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], 'b', [p[0] for p in self.peaks],
+    #                   [p[2] for p in self.peaks], 'go', markersize=5)
+    #     self.tr = pd.PeakFinder(rd.x[self.plotnum.get()][:, 0], rd.x[self.plotnum.get()][:, 1], inverse=True)
+    #     self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+    #     self.fig.plot([t[0] for t in self.troughs], [t[2] for t in self.troughs], 'ro', markersize=5)
+    #     self.canvas.draw()
+
+    def peakdet2_showdata_multi(self, xdata, ydata):
+        self.pf = pd.PeakFinder(xdata, ydata)
+        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+        self.fig.plot(xdata, ydata, 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
+        self.tr = pd.PeakFinder(xdata, ydata, inverse=True)
         self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
         self.fig.plot([t[0] for t in self.troughs], [t[2] for t in self.troughs], 'ro', markersize=5)
         self.canvas.draw()
 
     def pd2_param_update(self):
-        self.showpeaks()
+        x, y = self.set_Data()
+        self.showpeaks(x, y)
 
     def disable_pd1_controls(self):
         self.win.config(state=Tkconstants.DISABLED)
@@ -395,6 +511,8 @@ class TkDialog(Tkinter.Frame):
         plt.xlabel('wavelength')
         plt.ylabel('magnitude')
         plt.show(block=False)
+        x, y = self.set_Data()
+        print x, y
 
     def get_mean(self):
         mean_sum = 0
