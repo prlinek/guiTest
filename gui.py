@@ -41,6 +41,13 @@ class TkDialog(Tkinter.Frame):
         self.pausebtn = Tkinter.Button(self, text='Pause', command=self.pauseplot)
         self.pausebtn.pack(**button_opt)
 
+        # smoothing checkbox
+        self.smoothing = Tkinter.IntVar()
+        self.smoothing.set(0)
+        self.smoothed = Tkinter.Checkbutton(self, text='Smoothing', command=self.showFitedData, variable=self.smoothing,
+                                            onvalue=1, ofvalue=0)
+        self.smoothed.pack()
+
         # selection of peak detection algorithm
         self.peak_opt = Tkinter.IntVar()
         self.peak_opt.set(0)
@@ -87,6 +94,7 @@ class TkDialog(Tkinter.Frame):
         self.pd2_but.pack(**button_opt)
 
         Tkinter.Button(self, text='Show Intensity plot', command=self.showIntensityPlot).pack()
+        # Tkinter.Button(self, text='Show wv', command=self.showFitedData).pack()
 
         self.disable_pd1_controls()
         self.disable_pd2_controls()
@@ -112,7 +120,7 @@ class TkDialog(Tkinter.Frame):
 
         #define options for opening files
         self.file_opt = options = {}
-        options['initialdir'] = '../'
+        options['initialdir'] = '../DataPack1'
         options['parent'] = root
         options['title'] = 'Load file(s)'
 
@@ -259,20 +267,6 @@ class TkDialog(Tkinter.Frame):
         elif self.peak_opt.get() == 2:
             self.showpeaks()
 
-# not used anymore <- no 'Prvious data' button
-    # def prevplot(self):
-    #     if self.plotnum.get() > 0:
-    #         self.plotnum.set(self.plotnum.get() - 1)
-    #     elif self.plotnum.get() == 0:
-    #         self.plotnum.set(len(self.list_of_files) - 1)
-    #
-    #     if self.peak_opt.get() == 0:
-    #         self.showplot()
-    #     elif self.peak_opt.get() == 1:
-    #         self.showpeaks()
-    #     elif self.peak_opt.get() == 2:
-    #         self.showpeaks()
-
     def playplot(self):
         self.playbtn.config(state=Tkconstants.DISABLED)
 
@@ -310,6 +304,7 @@ class TkDialog(Tkinter.Frame):
         ym = [p[1] for p in self._max]
         xn = [p[0] for p in self._min]
         yn = [p[1] for p in self._min]
+
         if self.radio_selection.get() == 1:
             self.fig.plot(wavelength, magnitude, 'b', xm, ym, 'rs', xn, yn, 'go')
         elif self.radio_selection.get() == 2:
@@ -363,26 +358,81 @@ class TkDialog(Tkinter.Frame):
         self.pd2_but.config(state=Tkconstants.NORMAL)
 
     def showIntensityPlot(self):
-        # xdata = []
         xdata = rd.x[0][:, 0]
         ydata = []
         zdata = []
         for t in enumerate(self.list_of_files):
-            # xdata.append(rd.x[t[0]][:, 0])
             ydata.append(rd.x[t[0]][:, 1])
             zdata.append(t[0])
-        print xdata, '\n', zdata, '\n', ydata
-        #     print t[0]
+        # creating a mesh of size newxdata X newzdata
         newxdata, newzdata = np.meshgrid(xdata, zdata)
+        # masking data so colorbar can be used
         ydata = np.ma.array(ydata)
-        # newcolordata, zz = np.meshgrid(colordata, xdata)
         plt.figure()
         plt.title('Intensity plot')
         plt.xlabel('wavelength')
         plt.ylabel('Data No.')
         plt.pcolormesh(newxdata, newzdata, ydata)
         plt.colorbar()
-        plt.show()
+        plt.show(block=False)
+
+    def showFitedData(self):
+        x = rd.x[0][:, 0]
+        y = rd.x[0][:, 1]
+        # testing different windows
+        # windows = ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']
+        # for w in windows:
+        #     plt.plot(x, self.smooth(y, 11, w))
+        #     plt.legend(windows)
+
+        ys = self.smooth(y, window_len=6, window='blackman')
+        # print len(ys)
+        plt.plot(x, y, 'r', label='data')
+        plt.plot(x, ys, 'b', label='smothed')
+        plt.legend()
+        plt.grid()
+        # plt.title('Fig. 3 - Fit for Time Constant')
+        plt.xlabel('wavelength')
+        plt.ylabel('magnitude')
+        plt.show(block=False)
+
+    def get_mean(self):
+        mean_sum = 0
+        for i in range(len(self.list_of_files)):
+            mean_sum += np.mean(rd.x[i][:, 1])
+        mean = mean_sum / len(self.list_of_files)
+        return mean
+
+    def get_std(self):
+        std_sum = 0
+        for i in range(len(self.list_of_files)):
+            std_sum += np.std(rd.x[i][:, 1])
+        std = std_sum / len(self.list_of_files)
+        return std
+
+    def smooth(self, x, window_len=20, window='hanning'):
+
+        if x.ndim != 1:
+            raise ValueError("smooth only accepts 1 dimension arrays.")
+
+        if x.size < window_len:
+            raise ValueError("Input vector needs to be bigger than window size.")
+
+        if window_len < 3:
+            return x
+
+        if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
+            raise ValueError("Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
+
+        s = np.r_[x[window_len-1:0:-1], x, x[-1:-window_len:-1]]
+        if window == 'flat':  # moving average
+            w = np.ones(window_len, 'd')
+        else:
+            w = eval('np.'+window+'(window_len)')
+
+        y = np.convolve(w/w.sum(), s, mode='valid')
+        return y[(window_len / 2 - 1):(-window_len / 2)]
+
 
 if __name__ == '__main__':
     root = Tkinter.Tk()

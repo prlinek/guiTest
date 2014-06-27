@@ -27,3 +27,5 @@ def readFiles(list_of_files):
         readFile(file_name)
         x.append(data)
     return x
+
+

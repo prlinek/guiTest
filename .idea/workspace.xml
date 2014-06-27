@@ -26,8 +26,8 @@
       <file leaf-file-name="gui.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.52040815" vertical-offset="6171" max-vertical-offset="6749">
-              <caret line="378" column="19" selection-start-line="378" selection-start-column="19" selection-end-line="378" selection-end-column="19" />
+            <state vertical-scroll-proportion="-2.4" vertical-offset="6344" max-vertical-offset="7599">
+              <caret line="304" column="38" selection-start-line="304" selection-start-column="38" selection-end-line="304" selection-end-column="38" />
               <folding>
                 <element signature="e#19#33#0" expanded="true" />
               </folding>
@@ -35,24 +35,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="readdata.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/readdata.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="578">
-              <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="peakdetect.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/peakdetect.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6283" max-vertical-offset="7072">
-              <caret line="381" column="62" selection-start-line="381" selection-start-column="62" selection-end-line="381" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2808" max-vertical-offset="3298">
+              <caret line="438" column="0" selection-start-line="438" selection-start-column="0" selection-end-line="438" selection-end-column="0" />
               <folding>
-                <element signature="e#15407#19015#0" expanded="false" />
-                <element signature="e#17656#17834#1" expanded="false" />
+                <element signature="e#110#418#0" expanded="false" />
+                <element signature="e#486#3215#0" expanded="false" />
+                <element signature="e#4867#7396#0" expanded="false" />
+                <element signature="e#7450#8374#0" expanded="false" />
+                <element signature="e#8426#9007#0" expanded="false" />
+                <element signature="e#9244#13653#0" expanded="false" />
+                <element signature="e#13857#15145#0" expanded="false" />
+                <element signature="e#17412#17590#1" expanded="false" />
+                <element signature="e#18801#18862#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -69,8 +66,8 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/peakdet.py" />
-        <option value="$PROJECT_DIR$/peakdetect.py" />
         <option value="$PROJECT_DIR$/readdata.py" />
+        <option value="$PROJECT_DIR$/peakdetect.py" />
         <option value="$PROJECT_DIR$/gui.py" />
       </list>
     </option>
@@ -428,52 +425,37 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>128</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>154</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>168</line>
+          <line>161</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>191</line>
+          <line>184</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>210</line>
+          <line>203</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>218</line>
+          <line>211</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>260</line>
+          <line>253</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>360</line>
+          <line>353</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>444</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/peakdetect.py</url>
-          <line>465</line>
+          <line>458</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
@@ -487,7 +469,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="26" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -514,8 +496,15 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9146">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#15407#19015#0" expanded="false" />
-            <element signature="e#17656#17834#1" expanded="false" />
+            <element signature="e#110#418#0" expanded="false" />
+            <element signature="e#486#3215#0" expanded="false" />
+            <element signature="e#4867#7396#0" expanded="false" />
+            <element signature="e#7450#8374#0" expanded="false" />
+            <element signature="e#8426#9007#0" expanded="false" />
+            <element signature="e#9244#13653#0" expanded="false" />
+            <element signature="e#13857#15145#0" expanded="false" />
+            <element signature="e#17412#17590#1" expanded="false" />
+            <element signature="e#18801#18862#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -543,8 +532,15 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9197">
           <caret line="441" column="17" selection-start-line="441" selection-start-column="17" selection-end-line="441" selection-end-column="17" />
           <folding>
-            <element signature="e#15407#19015#0" expanded="false" />
-            <element signature="e#17656#17834#1" expanded="false" />
+            <element signature="e#110#418#0" expanded="false" />
+            <element signature="e#486#3215#0" expanded="false" />
+            <element signature="e#4867#7396#0" expanded="false" />
+            <element signature="e#7450#8374#0" expanded="false" />
+            <element signature="e#8426#9007#0" expanded="false" />
+            <element signature="e#9244#13653#0" expanded="false" />
+            <element signature="e#13857#15145#0" expanded="false" />
+            <element signature="e#17412#17590#1" expanded="false" />
+            <element signature="e#18801#18862#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -572,8 +568,15 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#15407#19015#0" expanded="false" />
-            <element signature="e#17656#17834#1" expanded="false" />
+            <element signature="e#110#418#0" expanded="false" />
+            <element signature="e#486#3215#0" expanded="false" />
+            <element signature="e#4867#7396#0" expanded="false" />
+            <element signature="e#7450#8374#0" expanded="false" />
+            <element signature="e#8426#9007#0" expanded="false" />
+            <element signature="e#9244#13653#0" expanded="false" />
+            <element signature="e#13857#15145#0" expanded="false" />
+            <element signature="e#17412#17590#1" expanded="false" />
+            <element signature="e#18801#18862#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -601,8 +604,15 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#15407#19015#0" expanded="false" />
-            <element signature="e#17656#17834#1" expanded="false" />
+            <element signature="e#110#418#0" expanded="false" />
+            <element signature="e#486#3215#0" expanded="false" />
+            <element signature="e#4867#7396#0" expanded="false" />
+            <element signature="e#7450#8374#0" expanded="false" />
+            <element signature="e#8426#9007#0" expanded="false" />
+            <element signature="e#9244#13653#0" expanded="false" />
+            <element signature="e#13857#15145#0" expanded="false" />
+            <element signature="e#17412#17590#1" expanded="false" />
+            <element signature="e#18801#18862#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -630,8 +640,15 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#15407#19015#0" expanded="false" />
-            <element signature="e#17656#17834#1" expanded="false" />
+            <element signature="e#110#418#0" expanded="false" />
+            <element signature="e#486#3215#0" expanded="false" />
+            <element signature="e#4867#7396#0" expanded="false" />
+            <element signature="e#7450#8374#0" expanded="false" />
+            <element signature="e#8426#9007#0" expanded="false" />
+            <element signature="e#9244#13653#0" expanded="false" />
+            <element signature="e#13857#15145#0" expanded="false" />
+            <element signature="e#17412#17590#1" expanded="false" />
+            <element signature="e#18801#18862#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -768,29 +785,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/peakdetect.py">
+    <entry file="file://$PROJECT_DIR$/readdata.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6283" max-vertical-offset="7072">
-          <caret line="381" column="62" selection-start-line="381" selection-start-column="62" selection-end-line="381" selection-end-column="62" />
-          <folding>
-            <element signature="e#15407#19015#0" expanded="false" />
-            <element signature="e#17656#17834#1" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="612">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readdata.py">
+    <entry file="file://$PROJECT_DIR$/peakdetect.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
-          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2145" max-vertical-offset="3298">
+          <caret line="438" column="0" selection-start-line="438" selection-start-column="0" selection-end-line="438" selection-end-column="0" />
+          <folding>
+            <element signature="e#110#418#0" expanded="false" />
+            <element signature="e#486#3215#0" expanded="false" />
+            <element signature="e#4867#7396#0" expanded="false" />
+            <element signature="e#7450#8374#0" expanded="false" />
+            <element signature="e#8426#9007#0" expanded="false" />
+            <element signature="e#9244#13653#0" expanded="false" />
+            <element signature="e#13857#15145#0" expanded="false" />
+            <element signature="e#17412#17590#1" expanded="false" />
+            <element signature="e#18801#18862#1" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52040815" vertical-offset="6171" max-vertical-offset="6749">
-          <caret line="378" column="19" selection-start-line="378" selection-start-column="19" selection-end-line="378" selection-end-column="19" />
+        <state vertical-scroll-proportion="-2.4" vertical-offset="6344" max-vertical-offset="7599">
+          <caret line="304" column="38" selection-start-line="304" selection-start-column="38" selection-end-line="304" selection-end-column="38" />
           <folding>
             <element signature="e#19#33#0" expanded="true" />
           </folding>

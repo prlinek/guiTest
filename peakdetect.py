@@ -16,7 +16,7 @@ def _datacheck_peakdetect(x_axis, y_axis):
     return x_axis, y_axis
 
 
-def peakdetect(y_axis, x_axis = None, lookahead = 30, delta=0):
+def peakdetect(y_axis, x_axis=None, lookahead=30, delta=0):
 
     max_peaks = []
     min_peaks = []
@@ -47,7 +47,6 @@ def peakdetect(y_axis, x_axis = None, lookahead = 30, delta=0):
         if y < mn:
             mn = y
             mnpos = x
-
         ####look for max####
         if y < mx-delta and mx != np.Inf:
             #Maxima peak candidate found
@@ -133,12 +132,6 @@ class PeakFinder(object):
     # '''
     #   Create the continous wavelet transform for the dataset.
     # '''
-    #     self.CWT = MexicanHat(self.ydata,
-    #                     largestscale=1,
-    #                     notes=self.resolution,
-    #                     order=1,
-    #                     scaling='log',
-    #                     )
         if self.inverse:
             self.CWT = MexicanHat(self.ydata,
                         largestscale=1,
