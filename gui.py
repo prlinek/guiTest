@@ -36,7 +36,17 @@ class TkDialog(Tkinter.Frame):
         self.smoothed = Tkinter.Checkbutton(self, text='Smoothing', command=self.updatePlot, variable=self.smoothing,
                                             onvalue=1, offvalue=0)
         self.smoothed.pack()
+        self.smoothed.config(anchor=Tkconstants.W)
+        # smoothing parameters controls
+        self.smooth_win_len = Tkinter.IntVar()
+        self.smooth_win_len.set(20)
+        Tkinter.Label(self, text='Smoothing window size').pack()
+        self.smooth_win = Tkinter.Entry(self, textvariable=self.smooth_win_len)
+        self.smooth_win.pack()
+        self.smooth_but = Tkinter.Button(self, text='Update parameter', command=self.updatePlot)
+        self.smooth_but.pack(**button_opt)
         Tkinter.Button(self, text='Show window comparison', command=self.showFitedData).pack()
+        # self.sm_win_len = int(self.smooth_win_len)
 
         # selection of peak detection algorithm
         self.peak_opt = Tkinter.IntVar()
@@ -146,7 +156,7 @@ Below are function declarations
         self.xdata = rd.x[self.plotnum.get()][:, 0]
         self.ydata = rd.x[self.plotnum.get()][:, 1]
         if self.smoothing.get() == 1:
-                    self.ydata = self.smooth(self.ydata, window_len=51)
+                    self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
         self.initPlot()
         self.fig.plot(self.xdata, self.ydata, 'b')
         self.canvas.draw()
@@ -159,7 +169,7 @@ Below are function declarations
             self.xdata = rd.x[self.plotnum.get()][:, 0]
             self.ydata = rd.x[self.plotnum.get()][:, 1]
             if self.smoothing.get() == 1:
-                    self.ydata = self.smooth(self.ydata, window_len=51)
+                    self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
             self.peakdet1_setdata_multi(self.xdata, self.ydata)
             self.peakdet1_showdata(self.xdata, self.ydata)
             self.enable_pd1_controls()
@@ -176,7 +186,7 @@ Below are function declarations
             self.xdata = rd.x[self.plotnum.get()][:, 0]
             self.ydata = rd.x[self.plotnum.get()][:, 1]
             if self.smoothing.get() == 1:
-                    self.ydata = self.smooth(self.ydata, window_len=51)
+                    self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
             self.peakdet2_showdata_multi(self.xdata, self.ydata)
             self.enable_pd2_controls()
             self.disable_pd1_controls()
@@ -303,18 +313,19 @@ Below are function declarations
 
     # function used for testing purposes of smooth() function
     def showFitedData(self):
-        x = rd.x[0][:, 0]
-        y = rd.x[0][:, 1]
+        x = rd.x[self.plotnum.get()][:, 0]
+        y = rd.x[self.plotnum.get()][:, 1]
         # testing different windows
+        leg = ['raw data']
         windows = ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']
+        leg.extend(windows)
+        plt.plot(x, y, 'k', label='data')
         for w in windows:
-            plt.plot(x, self.smooth(y, 11, w))
-            plt.legend(windows)
-        # ys = self.smooth(y, window_len=6, window='blackman')
-        plt.plot(x, y, 'r', label='data')
-        # plt.plot(x, ys, 'b', label='smothed')
-        # plt.legend()
+            plt.plot(x, self.smooth(y, self.smooth_win_len.get(), w))
+
+        plt.legend(leg)
         plt.grid()
+        plt.title('Comparison of smoothing windows')
         plt.xlabel('wavelength')
         plt.ylabel('magnitude')
         plt.show(block=False)
