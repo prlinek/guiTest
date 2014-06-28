@@ -4,6 +4,7 @@ import numpy
 import csv
 
 x = []
+data = []
 
 
 # reading data file
