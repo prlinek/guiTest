@@ -148,7 +148,7 @@ class PeakFinder(object):
                         scaling='log',
                         )
 
-    def _find_ridges(self, maxgap=4):
+    def _find_ridges(self, maxgap=3):
     # '''
     #   Ridges are lines connecting local maxima at different
     #   scales of the CWT. Starting from the highest scale
@@ -494,7 +494,7 @@ class MexicanHat(Cwt):
 
     def wf(self, s_omega):
         # should this number be 1/sqrt(3/4) (no pi)?
-        #s_omega = s_omega/self.fourierwl
+        # s_omega = s_omega/self.fourierwl
         #print max(s_omega)
         a = s_omega**2
         b = s_omega**2/2

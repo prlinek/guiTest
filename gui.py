@@ -82,18 +82,19 @@ class TkDialog(Tkinter.Frame):
         self.pd2lf.pack()
         Tkinter.Label(self.pd2lf, text='SNR').pack()
         self.snr_val = Tkinter.IntVar()
-        self.snr_val.set(2.5)
+        self.snr_val.set(5)
         self.snr = Tkinter.Entry(self.pd2lf, textvariable=self.snr_val)
         self.snr.pack()
         Tkinter.Label(self.pd2lf, text='Ridge length').pack()
         self.ridg_len = Tkinter.IntVar()
-        self.ridg_len.set(15)
+        self.ridg_len.set(20)
         self.ridglen = Tkinter.Entry(self.pd2lf, textvariable=self.ridg_len)
         self.ridglen.pack()
         self.pd2_but = Tkinter.Button(self.pd2lf, text='Update parameters', command=self.pd2_param_update)
         self.pd2_but.pack(**button_opt)
 
         Tkinter.Button(self, text='Show Intensity plot', command=self.showIntensityPlot).pack()
+        Tkinter.Button(self, text='Show peak tracker', command=self.peakTrack).pack()
         # Tkinter.Button(self, text='Show wv', command=self.showFitedData).pack()
 
         self.disable_pd1_controls()
@@ -163,7 +164,12 @@ Below are function declarations
 
     # displaying plot with peaks and troughs
     def showpeaks(self):
-        if self.peak_opt.get() == 1:
+        if self.peak_opt.get() == 0:
+            self.newShowPlot()
+            self.disable_pd1_controls()
+            self.disable_pd2_controls()
+
+        elif self.peak_opt.get() == 1:
             self.fig.cla()
             self.initPlot()
             self.xdata = rd.x[self.plotnum.get()][:, 0]
@@ -173,11 +179,6 @@ Below are function declarations
             self.peakdet1_setdata_multi(self.xdata, self.ydata)
             self.peakdet1_showdata(self.xdata, self.ydata)
             self.enable_pd1_controls()
-            self.disable_pd2_controls()
-
-        elif self.peak_opt.get() == 0:
-            self.newShowPlot()
-            self.disable_pd1_controls()
             self.disable_pd2_controls()
 
         elif self.peak_opt.get() == 2:
@@ -263,17 +264,22 @@ Below are function declarations
         self.showpeaks()
 
     def peakdet2_showdata_multi(self, xdata, ydata):
+
         self.pf = pd.PeakFinder(xdata, ydata)
-        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+        self.peaks = self.pf.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get(), min_width=2, analyze=True)
         self.fig.plot(xdata, ydata, 'b', [p[0] for p in self.peaks], [p[2] for p in self.peaks], 'go', markersize=5)
         self.tr = pd.PeakFinder(xdata, ydata, inverse=True)
-        self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())
+        self.troughs = self.tr.get_peaks(snr=self.snr_val.get(), ridge_length=self.ridg_len.get(), min_width=2, analyze=True)
         self.fig.plot([t[0] for t in self.troughs], [t[2] for t in self.troughs], 'ro', markersize=5)
         self.canvas.draw()
+        # Visualisation of how ridges are selected -> peaks detected
+        # self.pf.visualize(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())  # for test purposes only
+        # self.tr.visualize(snr=self.snr_val.get(), ridge_length=self.ridg_len.get())  # for test purposes only
 
     def pd2_param_update(self):
         self.showpeaks()
 
+    # functions for disabling and enabling controls for peak detection algorithms
     def disable_pd1_controls(self):
         self.win.config(state=Tkconstants.DISABLED)
         self.pd1_but.config(state=Tkconstants.DISABLED)
@@ -292,6 +298,7 @@ Below are function declarations
         self.ridglen.config(state=Tkconstants.NORMAL)
         self.pd2_but.config(state=Tkconstants.NORMAL)
 
+    # displays intensity plot from all data files in new window
     def showIntensityPlot(self):
         xdata = rd.x[0][:, 0]
         ydata = []
@@ -311,7 +318,7 @@ Below are function declarations
         plt.colorbar()
         plt.show(block=False)
 
-    # function used for testing purposes of smooth() function
+    # function used for testing purposes of smooth() function - window functions comparison
     def showFitedData(self):
         x = rd.x[self.plotnum.get()][:, 0]
         y = rd.x[self.plotnum.get()][:, 1]
@@ -367,6 +374,37 @@ Below are function declarations
         y = np.convolve(w/w.sum(), s, mode='valid')
         return y[(window_len / 2 - 1):(-window_len / 2)]
 
+    def peakTrack(self):
+        xdata_peak = []
+        ydata_peak = []
+        data_num = []
+        for i in range(len(self.list_of_files)):
+            x = rd.x[i][:, 0]
+            y = rd.x[i][:, 1]
+            self.peakdet1_setdata_multi(x, y)
+            xm = [p[0] for p in self._max]
+            ym = [p[1] for p in self._max]
+            # xn = [p[0] for p in self._min]
+            # yn = [p[1] for p in self._min]
+            ydata_peak.append(ym)
+            xdata_peak.append(xm)
+            ones = i * np.ones(len(xdata_peak[i]))
+            data_num.append(ones)
+
+        for i in range(len(self.list_of_files)):
+            plt.plot(xdata_peak[i], data_num[i], '+')
+        plt.xlabel('wavelength')
+        plt.ylabel('data no.')
+        plt.show(block=False)
+        plt.figure()
+        for i in range(len(self.list_of_files)):
+            plt.plot(ydata_peak[i], data_num[i], '+')
+        plt.xlabel('intensity')
+        plt.ylabel('data no.')
+        plt.show(block=False)
+        print data_num[1]
+        # print xdata_peak
+#
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
