@@ -157,7 +157,7 @@ Below are function declarations
         self.xdata = rd.x[self.plotnum.get()][:, 0]
         self.ydata = rd.x[self.plotnum.get()][:, 1]
         if self.smoothing.get() == 1:
-                    self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
+            self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
         self.initPlot()
         self.fig.plot(self.xdata, self.ydata, 'b')
         self.canvas.draw()
@@ -175,7 +175,7 @@ Below are function declarations
             self.xdata = rd.x[self.plotnum.get()][:, 0]
             self.ydata = rd.x[self.plotnum.get()][:, 1]
             if self.smoothing.get() == 1:
-                    self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
+                self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
             self.peakdet1_setdata_multi(self.xdata, self.ydata)
             self.peakdet1_showdata(self.xdata, self.ydata)
             self.enable_pd1_controls()
@@ -187,7 +187,7 @@ Below are function declarations
             self.xdata = rd.x[self.plotnum.get()][:, 0]
             self.ydata = rd.x[self.plotnum.get()][:, 1]
             if self.smoothing.get() == 1:
-                    self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
+                self.ydata = self.smooth(self.ydata, window_len=self.smooth_win_len.get())
             self.peakdet2_showdata_multi(self.xdata, self.ydata)
             self.enable_pd2_controls()
             self.disable_pd1_controls()
@@ -374,6 +374,10 @@ Below are function declarations
         y = np.convolve(w/w.sum(), s, mode='valid')
         return y[(window_len / 2 - 1):(-window_len / 2)]
 
+    def find_nearest(self, array, value):
+        idx = (np.abs(array-value)).argmin()
+        return array[idx], idx
+
     def peakTrack(self):
         xdata_peak = []
         ydata_peak = []
@@ -396,15 +400,63 @@ Below are function declarations
         plt.xlabel('wavelength')
         plt.ylabel('data no.')
         plt.show(block=False)
-        plt.figure()
+        # plt.figure()
+        # for i in range(len(self.list_of_files)):
+        #     plt.plot(ydata_peak[i], data_num[i], '+')
+        # plt.xlabel('intensity')
+        # plt.ylabel('data no.')
+        # plt.show(block=False)
+        # print data_num[1]
+        # print xdata_peak
+        length_ar = []
+        for i in range(len(xdata_peak)):
+            length = len(xdata_peak[i])
+            length_ar.append(length)
+            min_len = np.min(length_ar)
+            max_len = np.max(length_ar)
+
+        for i in range(len(xdata_peak)):
+            if len(xdata_peak[i]) < max_len:
+               iter_num = max_len - len(xdata_peak[i])
+               for j in range(iter_num):
+                   xdata_peak[i].append(0)
+            # print xdata_peak[i]
+
+        # tracked = []
+        tracked_pos = []
+        delta = 15
+        data_num2 = []
+        xdata_peak = np.array(xdata_peak)
+        ydata_peak = np.array(ydata_peak)
+        for j in range(len(xdata_peak)):
+            tracked = []
+            if j == 0:
+                previous_x = xdata_peak[j]
+                previous_y = ydata_peak[j]
+            for k in range(max_len):
+                nearest, idx = self.find_nearest(previous_x, xdata_peak[j][k])
+                if xdata_peak[j][k]-delta <= nearest <= xdata_peak[j][k]+delta:
+                    # if ydata_peak[j][k]-delta <= previous_y[idx] <= ydata_peak[j][k]+delta:
+                    tracked.append(nearest)
+                    # print xdata_peak[j][k], j, k, nearest, idx
+                else:
+                    # tracked.insert(k+1, 0)
+                    tracked.append(0)
+
+            ones = j * np.ones(len(tracked))
+            data_num2.append(ones)
+            tracked_pos.append(tracked)
+            previous_x = xdata_peak[j]
+            # print xdata_peak
+
+        plt.figure(3)
         for i in range(len(self.list_of_files)):
-            plt.plot(ydata_peak[i], data_num[i], '+')
-        plt.xlabel('intensity')
+            for j in range(len(tracked_pos[i])):
+                plt.plot(tracked_pos[i][j], data_num2[i][j], '+')
+        plt.xlim([500, 1200])
+        plt.xlabel('wavelength')
         plt.ylabel('data no.')
         plt.show(block=False)
-        print data_num[1]
-        # print xdata_peak
-#
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
