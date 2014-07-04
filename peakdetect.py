@@ -21,12 +21,12 @@ def peakdetect(y_axis, x_axis=None, lookahead=30, delta=0):
     max_peaks = []
     min_peaks = []
     dump = []   #Used to pop the first hit which almost always is false
+    threshold = 500  # peaks below that intensity value are not detected
 
     # check input data
     x_axis, y_axis = _datacheck_peakdetect(x_axis, y_axis)
     # store data length for later use
     length = len(y_axis)
-
 
     #perform some checks
     if lookahead < 1:
@@ -41,46 +41,47 @@ def peakdetect(y_axis, x_axis=None, lookahead=30, delta=0):
     #Only detect peak if there is 'lookahead' amount of points after it
     for index, (x, y) in enumerate(zip(x_axis[:-lookahead],
                                         y_axis[:-lookahead])):
-        if y > mx:
-            mx = y
-            mxpos = x
-        if y < mn:
-            mn = y
-            mnpos = x
-        ####look for max####
-        if y < mx-delta and mx != np.Inf:
-            #Maxima peak candidate found
-            #look ahead in signal to ensure that this is a peak and not jitter
-            if y_axis[index:index+lookahead].max() < mx:
-                max_peaks.append([mxpos, mx])
-                dump.append(True)
-                #set algorithm to only find minima now
-                mx = np.Inf
-                mn = np.Inf
-                if index+lookahead >= length:
-                    #end is within lookahead no more peaks can be found
-                    break
-                continue
-            #else:  #slows shit down this does
-            #    mx = ahead
-            #    mxpos = x_axis[np.where(y_axis[index:index+lookahead]==mx)]
+        if y > threshold:
+            if y > mx:
+                mx = y
+                mxpos = x
+            if y < mn:
+                mn = y
+                mnpos = x
+            ####look for max####
+            if y < mx-delta and mx != np.Inf:
+                #Maxima peak candidate found
+                #look ahead in signal to ensure that this is a peak and not jitter
+                if y_axis[index:index+lookahead].max() < mx:
+                    max_peaks.append([mxpos, mx])
+                    dump.append(True)
+                    #set algorithm to only find minima now
+                    mx = np.Inf
+                    mn = np.Inf
+                    if index+lookahead >= length:
+                        #end is within lookahead no more peaks can be found
+                        break
+                    continue
+                #else:  #slows shit down this does
+                #    mx = ahead
+                #    mxpos = x_axis[np.where(y_axis[index:index+lookahead]==mx)]
 
-        ####look for min####
-        if y > mn+delta and mn != -np.Inf:
-            #Minima peak candidate found
-            #look ahead in signal to ensure that this is a peak and not jitter
-            if y_axis[index:index+lookahead].min() > mn:
-                min_peaks.append([mnpos, mn])
-                dump.append(False)
-                #set algorithm to only find maxima now
-                mn = -np.Inf
-                mx = -np.Inf
-                if index+lookahead >= length:
-                    #end is within lookahead no more peaks can be found
-                    break
-            #else:  #slows shit down this does
-            #    mn = ahead
-            #    mnpos = x_axis[np.where(y_axis[index:index+lookahead]==mn)]
+            ####look for min####
+            if y > mn+delta and mn != -np.Inf:
+                #Minima peak candidate found
+                #look ahead in signal to ensure that this is a peak and not jitter
+                if y_axis[index:index+lookahead].min() > mn:
+                    min_peaks.append([mnpos, mn])
+                    dump.append(False)
+                    #set algorithm to only find maxima now
+                    mn = -np.Inf
+                    mx = -np.Inf
+                    if index+lookahead >= length:
+                        #end is within lookahead no more peaks can be found
+                        break
+                #else:  #slows shit down this does
+                #    mn = ahead
+                #    mnpos = x_axis[np.where(y_axis[index:index+lookahead]==mn)]
 
     #Remove the false hit on the first value of the y_axis
     try:
@@ -251,6 +252,7 @@ class PeakFinder(object):
                 ridge_length=15, analyze=False,
                 double_peak_detection=False,
                 double_peak_reduced_ridge_length=3):
+        threshold = 500
         xdata = self.xdata
         if min_width is None:
             min_width = 2.*abs(xdata[1]-xdata[0])
@@ -301,8 +303,8 @@ class PeakFinder(object):
             # SNR
             info.append(item[4])
             peak_info.append(info)
-        # filter for peak width
-        peak_info = filter(lambda item: (item[1] >= min_width) & (item[1] <= max_width),
+        # filter for peak width and y value above threshold
+        peak_info = filter(lambda item: (item[1] >= min_width) & (item[1] <= max_width) & (item[2] > threshold),
                      peak_info)
         if double_peak_detection:
             # detect double-peaks by reducing the ridge-length filtering in adjacency of
@@ -328,7 +330,7 @@ class PeakFinder(object):
                 w_low = xdata[i_low]
                 w_high = xdata[i_high]
                 w = w_high-w_low
-                info.append(float(abs(w))/1.6) # estimated peak width
+                info.append(float(abs(w))/1.6)  # estimated peak width
                 # intensity
                 info.append(item[3]*1.41/np.sqrt(item[2]))
                 # ridge length

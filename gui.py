@@ -426,13 +426,17 @@ Below are function declarations
         tracked_pos = []
         delta = 15
         data_num2 = []
+        data_num3 = []
         xdata_peak = np.array(xdata_peak)
         ydata_peak = np.array(ydata_peak)
+        ridge = []
         for j in range(len(xdata_peak)):
             tracked = []
             if j == 0:
                 previous_x = xdata_peak[j]
                 previous_y = ydata_peak[j]
+                ridge.append(xdata_peak[j])  # second method
+                # ridge = np.array(ridge)  # second method
             for k in range(max_len):
                 nearest, idx = self.find_nearest(previous_x, xdata_peak[j][k])
                 if xdata_peak[j][k]-delta <= nearest <= xdata_peak[j][k]+delta:
@@ -442,18 +446,34 @@ Below are function declarations
                 else:
                     # tracked.insert(k+1, 0)
                     tracked.append(0)
+                # second method
+                # if j > 0:
+                #     # zero = np.zeros(len(xdata_peak[j]))
+                #     # print zero
+                #     # ridge = np.vstack([ridge, zero])
+                #     # ridge.append(zero)
+                #     if ridge[j-1][k]-delta <= xdata_peak[j][k] <= ridge[j-1][k]+delta:
+                #         ridge[j][k] = xdata_peak[j][k]
+                #     else:
+                #         # if xdata_peak[j][k] >= ridge[j-1][k]:
+                #         ridge = np.insert(ridge, k, values=0, axis=0)
 
             ones = j * np.ones(len(tracked))
+            ones3 = j * np.ones(len(ridge))  # second method
             data_num2.append(ones)
+            data_num3.append(ones3)  # second method
             tracked_pos.append(tracked)
             previous_x = xdata_peak[j]
             # print xdata_peak
+            # print ridge  # second method
 
         plt.figure(3)
         for i in range(len(self.list_of_files)):
             for j in range(len(tracked_pos[i])):
+            # for j in range(len(ridge[i])):  # second method
                 plt.plot(tracked_pos[i][j], data_num2[i][j], '+')
-        plt.xlim([500, 1200])
+                # plt.plot(ridge[i][j], data_num3[i][j], '+')  # second method
+        plt.xlim([500, 1000])
         plt.xlabel('wavelength')
         plt.ylabel('data no.')
         plt.show(block=False)
