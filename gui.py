@@ -425,7 +425,7 @@ Below are function declarations
 
         # first method
         tracked_pos = []
-        delta = 15
+        delta = 10
         data_num2 = []
         xdata_peak1 = np.array(xdata_peak)  # need to be commented out for second method
         # ydata_peak1 = np.array(ydata_peak)
@@ -435,17 +435,24 @@ Below are function declarations
                 previous_x = xdata_peak1[j]
             for k in range(max_len):
                 nearest_x, idx = self.find_nearest(previous_x, xdata_peak1[j][k])
+                # print nearest_x
                 if xdata_peak1[j][k]-delta <= nearest_x <= xdata_peak1[j][k]+delta:
                     tracked.append(nearest_x)
-                    # print xdata_peak[j][k], j, k, nearest, idx
+                    # tracked.append(xdata_peak1[j][idx])
+                    # print xdata_peak[j][k], j, k, nearest_x, idx
                 else:
-                    tracked.append(0)
-                    # tracked.insert(k, 0)
+                    if xdata_peak1[j][k] - delta > nearest_x:
+                    # tracked.append(0)
+                        tracked.insert(k-1, nearest_x)
+                    elif xdata_peak1[j][k] + delta < nearest_x:
+                        tracked.insert(k+1, nearest_x)
+
             ones = j * np.ones(len(tracked))
             data_num2.append(ones)
             tracked_pos.append(tracked)
             previous_x = xdata_peak[j]
 
+        print tracked_pos
         plt.figure(3)
         for i in range(len(self.list_of_files)):
             for j in range(len(tracked_pos[i])):
@@ -457,43 +464,31 @@ Below are function declarations
 
         # second method
         delta = 15
-        ridge = []
+        ridge = np.zeros((len(xdata_peak), max_len), dtype=np.float64)
+        # y_size = len(self.list_of_files)
         data_num3 = []
-        # print "xdata: ", xdata_peak[0]
-        ridge = [xdata_peak[0]]
-        # print "ridge: %s" % ridge
-        for j in range(len(xdata_peak)):
-            empty_row = [0 for i in range(len(xdata_peak[j-1]))]
-            ridge.append(empty_row)
-            # print "ridge: %s" % ridge
-            for k in range(max_len):
-                # second method
-                if j > 0:
-                    # print ridge
-                    if ridge[j-1][k]-delta <= xdata_peak[j][k] <= ridge[j-1][k]+delta:
-                        ridge[j][k] = xdata_peak[j][k]
-                    else:
-                        if xdata_peak[j][k] > ridge[j-1][k] + delta:
-                            ridge[j][k] = 0
-                            if ridge[j-1][k+1 < len(ridge[j-1])]-delta <= xdata_peak[j][k] <= ridge[j-1][k+1 < len(ridge[j-1])]+delta:
-                                ridge[j][k+1] = xdata_peak[j][k]
-                        elif xdata_peak[j][k] < ridge[j-1][k] - delta:
-                            # ridge = np.insert(ridge, k, 0, axis=1)
-                            for row in ridge:
-                                row.insert(k, 0)
-                            ridge[j][k] = xdata_peak[j][k]
-
-        for j in range(len(self.list_of_files)):
-            ones3 = j * np.ones(len(ridge[j]))  # second method
-            data_num3.append(ones3)  # second method
-        # print len(ridge[0]), len(data_num3[0])
+        for i in range(len(xdata_peak)):
+            for j in range(max_len):
+                if i == 0:
+                    ridge[i, j] = xdata_peak[i][j]
+                else:
+                    nearest_x, idx = self.find_nearest(ridge[i-1, :], xdata_peak[i][j])
+                    if ridge[i-1, idx] - delta <= nearest_x <= ridge[i-1, idx] + delta:
+                        ridge[i, idx] = xdata_peak[i][j]
+                    elif nearest_x < ridge[i-1, idx]:
+                        ridge = np.insert(ridge, idx, 0, axis=1)
+                        ridge[i, idx] = xdata_peak[i][j]
+                    elif nearest_x > ridge[i-1, idx] + delta:
+                        ridge = np.insert(ridge, idx + 1, 0, axis=1)
+                        ridge[i, idx] = xdata_peak[i][j]
+            ones3 = i * np.ones(len(ridge[i, :]))
+            data_num3.append(ones3)
 
         print ridge
-
         plt.figure(4)
         for i in range(len(self.list_of_files)):
             for j in range(len(ridge[i])):  # second method
-                plt.plot(ridge[i][j], data_num3[i][j], '+')  # second method
+                plt.plot(ridge[i, j], data_num3[i][j], '+')  # second method
         plt.xlim([500, 1000])
         plt.xlabel('wavelength')
         plt.ylabel('data no.')
