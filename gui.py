@@ -395,12 +395,12 @@ Below are function declarations
             ones = i * np.ones(len(xdata_peak[i]))
             data_num.append(ones)
 
-        for i in range(len(self.list_of_files)):
-            plt.plot(xdata_peak[i], data_num[i], '+')
-        plt.xlabel('wavelength')
-        plt.ylabel('data no.')
-        plt.ylim([-1, len(self.list_of_files)])
-        plt.show(block=False)
+        # for i in range(len(self.list_of_files)):
+        #     plt.plot(xdata_peak[i], data_num[i], '+')
+        # plt.xlabel('wavelength')
+        # plt.ylabel('data no.')
+        # plt.ylim([-1, len(self.list_of_files)])
+        # plt.show(block=False)
         # plt.figure()
         # for i in range(len(self.list_of_files)):
         #     plt.plot(ydata_peak[i], data_num[i], '+')
@@ -437,12 +437,12 @@ Below are function declarations
                 nearest_x, idx = self.find_nearest(previous_x, xdata_peak1[j][k])
                 # print nearest_x
                 if xdata_peak1[j][k]-delta <= nearest_x <= xdata_peak1[j][k]+delta:
-                    tracked.append(nearest_x)
-                    # tracked.append(xdata_peak1[j][idx])
+                    # tracked.append(nearest_x)
+                    tracked.append(xdata_peak1[j][idx])
                     # print xdata_peak[j][k], j, k, nearest_x, idx
                 else:
                     if xdata_peak1[j][k] - delta > nearest_x:
-                    # tracked.append(0)
+                        # tracked.append(0)
                         tracked.insert(k-1, nearest_x)
                     elif xdata_peak1[j][k] + delta < nearest_x:
                         tracked.insert(k+1, nearest_x)
@@ -452,7 +452,7 @@ Below are function declarations
             tracked_pos.append(tracked)
             previous_x = xdata_peak[j]
 
-        print tracked_pos
+        # print tracked_pos
         plt.figure(3)
         for i in range(len(self.list_of_files)):
             for j in range(len(tracked_pos[i])):
@@ -463,7 +463,7 @@ Below are function declarations
         plt.show(block=False)
 
         # second method
-        delta = 15
+        delta = 10
         ridge = np.zeros((len(xdata_peak), max_len), dtype=np.float64)
         # y_size = len(self.list_of_files)
         data_num3 = []
@@ -473,21 +473,29 @@ Below are function declarations
                     ridge[i, j] = xdata_peak[i][j]
                 else:
                     nearest_x, idx = self.find_nearest(ridge[i-1, :], xdata_peak[i][j])
-                    if ridge[i-1, idx] - delta <= nearest_x <= ridge[i-1, idx] + delta:
+                    if ridge[i-1, idx] - delta <= xdata_peak[i][j] <= ridge[i-1, idx] + delta:
                         ridge[i, idx] = xdata_peak[i][j]
-                    elif nearest_x < ridge[i-1, idx]:
+                        # print "yupi"
+                    elif xdata_peak[i][j] < ridge[i-1, idx] - delta:
                         ridge = np.insert(ridge, idx, 0, axis=1)
                         ridge[i, idx] = xdata_peak[i][j]
-                    elif nearest_x > ridge[i-1, idx] + delta:
+                        # print "foo"
+                    elif xdata_peak[i][j] > ridge[i-1, idx] + delta:
                         ridge = np.insert(ridge, idx + 1, 0, axis=1)
                         ridge[i, idx] = xdata_peak[i][j]
-            ones3 = i * np.ones(len(ridge[i, :]))
-            data_num3.append(ones3)
+                        # print "bar"
 
-        print ridge
+        # for i in range(len(xdata_peak)):
+        #     ones3 = i * np.ones(len(ridge[i, :]))
+        #     data_num3.append(ones3)
+
+        # print ridge,
         plt.figure(4)
         for i in range(len(self.list_of_files)):
-            for j in range(len(ridge[i])):  # second method
+            ones3 = i * np.ones(len(ridge[i, :]))
+            data_num3.append(ones3)
+            for j in range(len(ridge[i, :])):  # second method
+                # print len(ridge), len(data_num3), len(ridge[i]), len(data_num3[i])
                 plt.plot(ridge[i, j], data_num3[i][j], '+')  # second method
         plt.xlim([500, 1000])
         plt.xlabel('wavelength')
