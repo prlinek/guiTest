@@ -4,7 +4,6 @@ import numpy
 import csv
 
 x = []
-data = []
 
 
 # reading data file
@@ -17,7 +16,6 @@ def readFile(fname):
             rows.append([])
             rows[n].extend(row)
     f.close()
-    global data
     data = numpy.array(rows, float)
     return data
 
@@ -25,7 +23,7 @@ def readFile(fname):
 # reading batches of files
 def readFiles(list_of_files):
     for file_name in list_of_files:
-        readFile(file_name)
+        data = readFile(file_name)
         x.append(data)
     return x
 

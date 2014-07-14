@@ -1,3 +1,4 @@
+from matplotlib.pyplot import xlabel, ylabel, title, xlim
 import numpy as np
 from scipy.stats.mstats import mquantiles
 
@@ -384,6 +385,11 @@ class PeakFinder(object):
                 plot(ridge[1], ridge[0], 'b-', linewidth=2)
             else:
                 plot(ridge[1], ridge[0], "y-")
+
+        title('Identified ridge lines')
+        xlabel('Sample No.')
+        ylabel('CWT coefficient scale')
+        xlim([0, 2050])
         show()
 
 
