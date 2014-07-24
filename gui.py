@@ -12,7 +12,7 @@ import numpy as np
 class TkDialog(Tkinter.Frame):
     def __init__(self, root):
         Tkinter.Frame.__init__(self, root)
-        root.title("Program")
+        root.title("Spectral Processing")
 
         self.plotnum = Tkinter.IntVar()
         self.plotnum.set(0)
@@ -45,8 +45,8 @@ class TkDialog(Tkinter.Frame):
         self.smooth_win.pack()
         self.smooth_but = Tkinter.Button(self, text='Update parameter', command=self.updatePlot)
         self.smooth_but.pack(**button_opt)
-        Tkinter.Button(self, text='Show window comparison', command=self.showFitedData).pack()
-        # self.sm_win_len = int(self.smooth_win_len)
+        self.smooth_but2 = Tkinter.Button(self, text='Show window comparison', command=self.showFitedData)
+        self.smooth_but2.pack(**button_opt)
 
         # selection of peak detection algorithm
         self.peak_opt = Tkinter.IntVar()
@@ -57,17 +57,17 @@ class TkDialog(Tkinter.Frame):
                                           command=self.showpeaks)
         self.radio1.pack(**radio_opt)
         self.radio1.config(anchor=Tkconstants.W)
-        self.radio2 = Tkinter.Radiobutton(self.labelframe, text='peakdet1', variable=self.peak_opt, value=1,
+        self.radio2 = Tkinter.Radiobutton(self.labelframe, text='Window-threshold', variable=self.peak_opt, value=1,
                                           command=self.showpeaks)
         self.radio2.pack(**radio_opt)
         self.radio2.config(anchor=Tkconstants.W)
-        self.radio3 = Tkinter.Radiobutton(self.labelframe, text='peakdet2', variable=self.peak_opt, value=2,
+        self.radio3 = Tkinter.Radiobutton(self.labelframe, text='Wavelet matching', variable=self.peak_opt, value=2,
                                           command=self.showpeaks)
         self.radio3.pack(**radio_opt)
         self.radio3.config(anchor=Tkconstants.W)
 
         # setting parameter for 'peakdet1'
-        self.pd1lf = Tkinter.LabelFrame(self, text='Peakdet1 parameter')
+        self.pd1lf = Tkinter.LabelFrame(self, text='Window-threshold parameter')
         self.pd1lf.pack()
         Tkinter.Label(self.pd1lf, text='Window size').pack()
         self.win_size = Tkinter.IntVar()
@@ -78,7 +78,7 @@ class TkDialog(Tkinter.Frame):
         self.pd1_but.pack(**button_opt)
 
         # setting parameters for 'peakdet2'
-        self.pd2lf = Tkinter.LabelFrame(self, text='Peakdet2 parameters')
+        self.pd2lf = Tkinter.LabelFrame(self, text='Wavelet matching parameters')
         self.pd2lf.pack()
         Tkinter.Label(self.pd2lf, text='SNR').pack()
         self.snr_val = Tkinter.IntVar()
@@ -93,12 +93,17 @@ class TkDialog(Tkinter.Frame):
         self.pd2_but = Tkinter.Button(self.pd2lf, text='Update parameters', command=self.pd2_param_update)
         self.pd2_but.pack(**button_opt)
 
-        Tkinter.Button(self, text='Show Intensity plot', command=self.showIntensityPlot).pack()
-        Tkinter.Button(self, text='Show peak tracker', command=self.peakTrack).pack()
+        self.ip_but = Tkinter.Button(self, text='Show Intensity plot', command=self.showIntensityPlot)
+        self.ip_but.pack(**button_opt)
+        self.pt_but = Tkinter.Button(self, text='Show peak tracker', command=self.peakTrack)
+        self.pt_but.pack(**button_opt)
         # Tkinter.Button(self, text='Show wv', command=self.showFitedData).pack()
 
+        self.disable_smoothing()
+        self.disable_pd_choice()
         self.disable_pd1_controls()
         self.disable_pd2_controls()
+        self.disable_plots()
 
         # creating new frame for containing plot and toolbar
         self.frame = Tkinter.Frame(root)
@@ -134,6 +139,10 @@ Below are function declarations
             self.plotnum.set(0)
             self.newShowPlot()
             self.peak_opt.set(0)
+            self.enable_smoothing()
+            self.enable_pd_choice()
+            if len(self.list_of_files) > 15:
+                self.enable_plots()
             if self.slide_len != len(self.list_of_files):
                 self.slide.destroy()
                 self.slide_len = len(self.list_of_files) - 1
@@ -280,6 +289,28 @@ Below are function declarations
         self.showpeaks()
 
     # functions for disabling and enabling controls for peak detection algorithms
+    def disable_smoothing(self):
+        self.smooth_win.config(state=Tkconstants.DISABLED)
+        self.smooth_but.config(state=Tkconstants.DISABLED)
+        self.smooth_but2.config(state=Tkconstants.DISABLED)
+        self.smoothed.config(state=Tkconstants.DISABLED)
+
+    def enable_smoothing(self):
+        self.smooth_win.config(state=Tkconstants.NORMAL)
+        self.smooth_but.config(state=Tkconstants.NORMAL)
+        self.smooth_but2.config(state=Tkconstants.NORMAL)
+        self.smoothed.config(state=Tkconstants.NORMAL)
+
+    def disable_pd_choice(self):
+        self.radio1.config(state=Tkconstants.DISABLED)
+        self.radio2.config(state=Tkconstants.DISABLED)
+        self.radio3.config(state=Tkconstants.DISABLED)
+
+    def enable_pd_choice(self):
+        self.radio1.config(state=Tkconstants.NORMAL)
+        self.radio2.config(state=Tkconstants.NORMAL)
+        self.radio3.config(state=Tkconstants.NORMAL)
+
     def disable_pd1_controls(self):
         self.win.config(state=Tkconstants.DISABLED)
         self.pd1_but.config(state=Tkconstants.DISABLED)
@@ -297,6 +328,14 @@ Below are function declarations
         self.snr.config(state=Tkconstants.NORMAL)
         self.ridglen.config(state=Tkconstants.NORMAL)
         self.pd2_but.config(state=Tkconstants.NORMAL)
+
+    def disable_plots(self):
+        self.ip_but.config(state=Tkconstants.DISABLED)
+        self.pt_but.config(state=Tkconstants.DISABLED)
+
+    def enable_plots(self):
+        self.ip_but.config(state=Tkconstants.NORMAL)
+        self.pt_but.config(state=Tkconstants.NORMAL)
 
     # displays intensity plot from all data files in new window
     def showIntensityPlot(self):
@@ -323,7 +362,6 @@ Below are function declarations
         plt.xlabel('wavelength')
         plt.ylabel('Data No.')
         plt.pcolormesh(newxdata, newzdata, ydata)
-        # plt.pcolor(newxdata, newzdata, ydata)
         plt.set_cmap('binary')
 
         plt.colorbar()
@@ -409,16 +447,15 @@ Below are function declarations
             xdata_peak.append(xm)
             ones = i * np.ones(len(xdata_peak[i]))
             data_num.append(ones)
-        # min_len = np.min(length_ar)
         max_len = np.max(length_ar)
         print "first step - done!"
 
-        for i in range(len(self.list_of_files)):
-            plt.plot(xdata_peak[i], data_num[i], '+')
-        plt.xlabel('wavelength')
-        plt.ylabel('data no.')
-        plt.ylim([-1, len(self.list_of_files)])
-        plt.show(block=False)
+        # for i in range(len(self.list_of_files)):
+        #     plt.plot(xdata_peak[i], data_num[i], '+')
+        # plt.xlabel('wavelength')
+        # plt.ylabel('data no.')
+        # plt.ylim([-1, len(self.list_of_files)])
+        # plt.show(block=False)
         # plt.figure()
         # for i in range(len(self.list_of_files)):
         #     plt.plot(ydata_peak[i], data_num[i], '+')
@@ -428,60 +465,13 @@ Below are function declarations
         # print data_num[1]
         # print xdata_peak
 
-        # length_ar = []
-        # for i in range(len(xdata_peak)):
-        #     length = len(xdata_peak[i])
-        #     length_ar.append(length)
-        #     min_len = np.min(length_ar)
-        #     max_len = np.max(length_ar)
-
         for i in range(out_loop_len):
             xdata_len_i = len(xdata_peak[i])
             if xdata_len_i < max_len:
                 iter_num = max_len - xdata_len_i
                 for j in range(iter_num):
                     xdata_peak[i].append(0)
-                    # print xdata_peak[i]
         print "second step - done!"
-
-        # # first method
-        # tracked_pos = []
-        # delta = 15
-        # data_num2 = []
-        # xdata_peak1 = np.array(xdata_peak)  # need to be commented out for second method
-        # # ydata_peak1 = np.array(ydata_peak)
-        # for j in xrange(len(xdata_peak)):
-        #     tracked = []
-        #     if j == 0:
-        #         previous_x = xdata_peak1[j]
-        #     for k in xrange(max_len):
-        #         nearest_x, idx = self.find_nearest(previous_x, xdata_peak1[j][k])
-        #         # print nearest_x
-        #         if xdata_peak1[j][k]-delta <= nearest_x <= xdata_peak1[j][k]+delta:
-        #             # tracked.append(nearest_x)
-        #             tracked.append(xdata_peak1[j][idx])
-        #             # print xdata_peak[j][k], j, k, nearest_x, idx
-        #         else:
-        #             if xdata_peak1[j][k] - delta > nearest_x:
-        #                 # tracked.append(0)
-        #                 tracked.insert(k-1, nearest_x)
-        #             elif xdata_peak1[j][k] + delta < nearest_x:
-        #                 tracked.insert(k+1, nearest_x)
-        #
-        #     ones = j * np.ones(len(tracked))
-        #     data_num2.append(ones)
-        #     tracked_pos.append(tracked)
-        #     previous_x = xdata_peak[j]
-        #
-        # # print tracked_pos
-        # plt.figure(3)
-        # for i in xrange(out_loop_len):
-        #     for j in xrange(len(tracked_pos[i])):
-        #         plt.plot(tracked_pos[i][j], data_num2[i][j], '+')
-        # plt.xlim([500, 1000])
-        # plt.xlabel('wavelength')
-        # plt.ylabel('data no.')
-        # plt.show(block=False)
 
         # second method
         delta = 8
@@ -489,7 +479,6 @@ Below are function declarations
         xlen = len(xdata_peak)
         ridge = np.zeros((xlen, max_len), dtype=np.float64)
         gap = np.zeros(max_len)
-        # y_size = len(self.list_of_files)
         data_num3 = []
         for i in range(out_loop_len):
             if i == 0:
@@ -515,24 +504,34 @@ Below are function declarations
 
         for j in range(max_len):
             nonzero = np.count_nonzero(ridge[:, j])
-            print nonzero
             if nonzero < xlen / 5:
                 ridge = np.delete(ridge, j, axis=1)
 
         print "third step - done!"
-        # print ridge[:, 0]
-
-        # for i in xrange(out_loop_len):
-        #     ones3 = i * np.ones(len(ridge[i, :]))
-        #     data_num3.append(ones3)
 
         plt.figure(4)
         for i in range(out_loop_len):
             ones3 = i * np.ones(len(ridge[i, :]))
             data_num3.append(ones3)
-            # print len(data_num3[i])
             for j in range(len(ridge[i])):
                 plt.plot(ridge[i, j], data_num3[i][j], '+')
+
+        xdata = rd.x[0][:, 0]
+        ydata = []
+        zdata = []
+        loop_len = len(self.list_of_files)
+        appendy = ydata.append
+        appendz = zdata.append
+        # for t in enumerate(self.list_of_files):
+        for t in range(loop_len):
+            appendy(rd.x[t][:, 1])
+            appendz(t)
+        # creating a mesh of size newxdata X newzdata
+        newxdata, newzdata = np.meshgrid(xdata, zdata)
+        # masking data so colorbar can be used
+        ydata = np.ma.array(ydata)
+        plt.pcolormesh(newxdata, newzdata, ydata)
+        plt.set_cmap('binary')
 
         print "fourth step - done!"
         plt.xlim([500, 1000])
