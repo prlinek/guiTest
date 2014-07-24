@@ -33,16 +33,16 @@ class TkDialog(Tkinter.Frame):
         # smoothing checkbox
         self.smoothing = Tkinter.IntVar()
         self.smoothing.set(0)
-        self.smoothed = Tkinter.Checkbutton(self, text='Smoothing', command=self.updatePlot, variable=self.smoothing,
+        self.smoothed = Tkinter.Checkbutton(self, text='Smoothing On\Off', command=self.updatePlot, variable=self.smoothing,
                                             onvalue=1, offvalue=0)
-        self.smoothed.pack()
+        self.smoothed.pack(**radio_opt)
         self.smoothed.config(anchor=Tkconstants.W)
         # smoothing parameters controls
         self.smooth_win_len = Tkinter.IntVar()
         self.smooth_win_len.set(20)
         Tkinter.Label(self, text='Smoothing window size').pack()
         self.smooth_win = Tkinter.Entry(self, textvariable=self.smooth_win_len)
-        self.smooth_win.pack()
+        self.smooth_win.pack(**button_opt)
         self.smooth_but = Tkinter.Button(self, text='Update parameter', command=self.updatePlot)
         self.smooth_but.pack(**button_opt)
         self.smooth_but2 = Tkinter.Button(self, text='Show window comparison', command=self.showFitedData)
@@ -73,7 +73,7 @@ class TkDialog(Tkinter.Frame):
         self.win_size = Tkinter.IntVar()
         self.win_size.set(5)
         self.win = Tkinter.Entry(self.pd1lf, textvariable=self.win_size)
-        self.win.pack()
+        self.win.pack(**button_opt)
         self.pd1_but = Tkinter.Button(self.pd1lf, text='Update parameter', command=self.pd1_param_update)
         self.pd1_but.pack(**button_opt)
 
@@ -84,12 +84,12 @@ class TkDialog(Tkinter.Frame):
         self.snr_val = Tkinter.IntVar()
         self.snr_val.set(5)
         self.snr = Tkinter.Entry(self.pd2lf, textvariable=self.snr_val)
-        self.snr.pack()
+        self.snr.pack(**button_opt)
         Tkinter.Label(self.pd2lf, text='Ridge length').pack()
         self.ridg_len = Tkinter.IntVar()
         self.ridg_len.set(20)
         self.ridglen = Tkinter.Entry(self.pd2lf, textvariable=self.ridg_len)
-        self.ridglen.pack()
+        self.ridglen.pack(**button_opt)
         self.pd2_but = Tkinter.Button(self.pd2lf, text='Update parameters', command=self.pd2_param_update)
         self.pd2_but.pack(**button_opt)
 
@@ -450,12 +450,13 @@ Below are function declarations
         max_len = np.max(length_ar)
         print "first step - done!"
 
+        # plt.figure()
         # for i in range(len(self.list_of_files)):
         #     plt.plot(xdata_peak[i], data_num[i], '+')
         # plt.xlabel('wavelength')
         # plt.ylabel('data no.')
         # plt.ylim([-1, len(self.list_of_files)])
-        # plt.show(block=False)
+        # # plt.show(block=False)
         # plt.figure()
         # for i in range(len(self.list_of_files)):
         #     plt.plot(ydata_peak[i], data_num[i], '+')
@@ -471,76 +472,107 @@ Below are function declarations
                 iter_num = max_len - xdata_len_i
                 for j in range(iter_num):
                     xdata_peak[i].append(0)
+                    ydata_peak[i].append(0)
         print "second step - done!"
 
         # second method
+        gap = 2
+        # xdata_peak = xdata_peak[0::gap][:]
+        # ydata_peak = ydata_peak[0::gap][:]
+        # out_loop_len = out_loop_len / gap
         delta = 8
         delta2 = 10
         xlen = len(xdata_peak)
         ridge = np.zeros((xlen, max_len), dtype=np.float64)
+        ridge_y = np.zeros((xlen, max_len), dtype=np.float64)
         gap = np.zeros(max_len)
         data_num3 = []
         for i in range(out_loop_len):
             if i == 0:
                 ridge[i, :] = xdata_peak[i][:]
+                ridge_y[i, :] = ydata_peak[i][:]
             for j in range(max_len):
                 if i == 0:
                     ridge[i, j] = xdata_peak[i][j]
+                    ridge_y[i, j] = ydata_peak[i][j]
                 else:
                     nearest_x, idx = self.find_nearest(ridge[i-1, :], xdata_peak[i][j])
                     if ridge[i-1, idx] - delta <= xdata_peak[i][j] <= ridge[i-1, idx] + delta:
                         ridge[i, idx] = xdata_peak[i][j]
+                        ridge_y[i, idx] = ydata_peak[i][j]
                     elif ridge[i-1, idx] + delta > xdata_peak[i][j] < ridge[i-1, idx] - delta:
                         nearest_x, idx = self.find_nearest(ridge[i-4, :], xdata_peak[i][j])
                         if ridge[i-4, idx] - delta2 <= xdata_peak[i][j] <= ridge[i-4, idx] + delta2:
                             ridge[i, idx] = xdata_peak[i][j]
+                            ridge_y[i, idx] = ydata_peak[i][j]
                         elif ridge[i-4, idx] + delta2 > xdata_peak[i][j] < ridge[i-4, idx] - delta2:
                             nearest_x, idx = self.find_nearest(ridge[i-10, :], xdata_peak[i][j])
                             if ridge[i-10, idx] - delta2 <= xdata_peak[i][j] <= ridge[i-10, idx] + delta2:
                                 ridge[i, idx] = xdata_peak[i][j]
+                                ridge_y[i, idx] = ydata_peak[i][j]
                     else:
                         ridge = np.insert(ridge, idx, 0, axis=1)
                         ridge[i, idx] = xdata_peak[i][j]
+                        ridge_y = np.insert(ridge_y, idx, 0, axis=1)
+                        ridge_y[i, idx] = ydata_peak[i][j]
 
         for j in range(max_len):
             nonzero = np.count_nonzero(ridge[:, j])
             if nonzero < xlen / 5:
                 ridge = np.delete(ridge, j, axis=1)
+                ridge_y = np.delete(ridge_y, j, axis=1)
 
         print "third step - done!"
 
         plt.figure(4)
+        plt.subplot(2, 1, 1)
         for i in range(out_loop_len):
             ones3 = i * np.ones(len(ridge[i, :]))
             data_num3.append(ones3)
             for j in range(len(ridge[i])):
                 plt.plot(ridge[i, j], data_num3[i][j], '+')
 
-        xdata = rd.x[0][:, 0]
-        ydata = []
-        zdata = []
-        loop_len = len(self.list_of_files)
-        appendy = ydata.append
-        appendz = zdata.append
-        # for t in enumerate(self.list_of_files):
-        for t in range(loop_len):
-            appendy(rd.x[t][:, 1])
-            appendz(t)
-        # creating a mesh of size newxdata X newzdata
-        newxdata, newzdata = np.meshgrid(xdata, zdata)
-        # masking data so colorbar can be used
-        ydata = np.ma.array(ydata)
-        plt.pcolormesh(newxdata, newzdata, ydata)
-        plt.set_cmap('binary')
+        # xdata = rd.x[0][:, 0]
+        # ydata = []
+        # zdata = []
+        # loop_len = len(self.list_of_files)
+        # appendy = ydata.append
+        # appendz = zdata.append
+        # # for t in enumerate(self.list_of_files):
+        # for t in range(loop_len):
+        #     appendy(rd.x[t][:, 1])
+        #     appendz(t)
+        # # creating a mesh of size newxdata X newzdata
+        # newxdata, newzdata = np.meshgrid(xdata, zdata)
+        # # masking data so colorbar can be used
+        # ydata = np.ma.array(ydata)
+        # plt.pcolormesh(newxdata, newzdata, ydata)
+        # plt.set_cmap('binary')
 
         print "fourth step - done!"
         plt.xlim([500, 1000])
         plt.xlabel('wavelength')
         plt.ylabel('data no.')
+        plt.grid()
+        plt.tight_layout()
+        # plt.show(block=False)
+
+        plt.subplot(2, 1, 2)
+        for i in range(out_loop_len):
+            ones3 = i * np.ones(len(ridge[i, :]))
+            data_num3.append(ones3)
+            for j in range(len(ridge[i])):
+                plt.plot(ridge_y[i, j], data_num3[i][j], '+')
+        plt.xlim(xmin=500)
+        plt.xlabel('intensity')
+        plt.ylabel('data no.')
+        plt.grid()
+        plt.tight_layout()
         plt.show(block=False)
 
 if __name__ == '__main__':
     root = Tkinter.Tk()
+    root.resizable(width=False, height=False)
     stat = Tkinter.BooleanVar(root)
     stat.set(True)
     TkDialog(root).pack()
