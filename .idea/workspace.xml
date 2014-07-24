@@ -23,11 +23,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="readdata.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="gui.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/gui.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.9081081" vertical-offset="8183" max-vertical-offset="9282">
+              <caret line="518" column="34" selection-start-line="518" selection-start-column="34" selection-end-line="518" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readdata.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/readdata.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.41020408" vertical-offset="88" max-vertical-offset="595">
-              <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="612">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -36,19 +46,9 @@
       <file leaf-file-name="peakdetect.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/peakdetect.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1465" max-vertical-offset="1955">
-              <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
-              <folding>
-                <element signature="e#3599#15668#0" expanded="false" />
-                <element signature="e#4150#4492#0" expanded="false" />
-                <element signature="e#4518#5135#0" expanded="false" />
-                <element signature="e#5179#7708#0" expanded="false" />
-                <element signature="e#7762#8686#0" expanded="false" />
-                <element signature="e#8738#9319#0" expanded="false" />
-                <element signature="e#9556#14042#0" expanded="false" />
-                <element signature="e#15686#19294#0" expanded="false" />
-                <element signature="e#19324#19810#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="8225" max-vertical-offset="8738">
+              <caret line="501" column="0" selection-start-line="501" selection-start-column="0" selection-end-line="501" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,8 +66,6 @@
         <option value="$PROJECT_DIR$/peakdet.py" />
         <option value="$PROJECT_DIR$/peakdetect.py" />
         <option value="$PROJECT_DIR$/readdata.py" />
-        <option value="$PROJECT_DIR$/openCV.py" />
-        <option value="$PROJECT_DIR$/ocv.py" />
         <option value="$PROJECT_DIR$/gui.py" />
       </list>
     </option>
@@ -76,7 +74,7 @@
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1382" />
-    <option name="height" value="649" />
+    <option name="height" value="714" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -121,6 +119,52 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="guiTest" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guiTest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guiTest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="peakdetect.py" />
+              <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PeakFinder" />
+              <option name="myItemType" value="com.jetbrains.python.projectView.PyElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guiTest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guiTest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="peakdetect.py" />
+              <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guiTest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guiTest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gui.py" />
+              <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -216,24 +260,6 @@
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ocv" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="guiTest" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ocv.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -358,20 +384,18 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <list size="5">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.gui" />
       <item index="1" class="java.lang.String" itemvalue="Python.readdata" />
       <item index="2" class="java.lang.String" itemvalue="Python.peakdet" />
       <item index="3" class="java.lang.String" itemvalue="Python.peakdetect" />
-      <item index="4" class="java.lang.String" itemvalue="Python.ocv" />
     </list>
     <recent_temporary>
-      <list size="5">
+      <list size="4">
         <item index="0" class="java.lang.String" itemvalue="Python.gui" />
-        <item index="1" class="java.lang.String" itemvalue="Python.ocv" />
-        <item index="2" class="java.lang.String" itemvalue="Python.peakdetect" />
-        <item index="3" class="java.lang.String" itemvalue="Python.peakdet" />
-        <item index="4" class="java.lang.String" itemvalue="Python.readdata" />
+        <item index="1" class="java.lang.String" itemvalue="Python.peakdetect" />
+        <item index="2" class="java.lang.String" itemvalue="Python.peakdet" />
+        <item index="3" class="java.lang.String" itemvalue="Python.readdata" />
       </list>
     </recent_temporary>
   </component>
@@ -408,19 +432,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="649" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="714" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.23156089" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="11" y="279" width="1344" height="137" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.23156089" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="11" y="279" width="1344" height="137" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32818532" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.116071425" sideWeight="0.4980695" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.116071425" sideWeight="0.49914238" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3996139" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.116071425" sideWeight="0.5019305" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32818532" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.77799225" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="9" y="343" width="1360" height="256" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.116071425" sideWeight="0.50085765" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.77701545" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="9" y="343" width="1360" height="256" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32761577" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -462,57 +486,11 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/peakdetect.py">
+    <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8772">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ocv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="374">
-          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-          <folding>
-            <element signature="e#23#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readdata.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="122" max-vertical-offset="612">
-          <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="8806" max-vertical-offset="9214">
+          <caret line="518" column="37" selection-start-line="518" selection-start-column="37" selection-end-line="518" selection-end-column="37" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/peakdetect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8772">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -528,17 +506,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8738">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6446" max-vertical-offset="6936">
+          <caret line="522" column="42" selection-start-line="522" selection-start-column="42" selection-end-line="522" selection-end-column="42" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -554,17 +530,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8772">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5463" max-vertical-offset="6103">
+          <caret line="507" column="30" selection-start-line="507" selection-start-column="30" selection-end-line="507" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -580,17 +554,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8670">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5066" max-vertical-offset="5627">
+          <caret line="460" column="59" selection-start-line="460" selection-start-column="59" selection-end-line="460" selection-end-column="59" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -606,17 +578,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8670">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3213" max-vertical-offset="7225">
+          <caret line="200" column="39" selection-start-line="200" selection-start-column="39" selection-end-line="200" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -632,17 +602,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9146">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4719" max-vertical-offset="5678">
+          <caret line="295" column="101" selection-start-line="295" selection-start-column="101" selection-end-line="295" selection-end-column="101" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -658,17 +626,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9197">
           <caret line="441" column="17" selection-start-line="441" selection-start-column="17" selection-end-line="441" selection-end-column="17" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="4097">
+          <caret line="55" column="132" selection-start-line="55" selection-start-column="132" selection-end-line="55" selection-end-column="132" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -684,17 +650,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="748" max-vertical-offset="4097">
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -710,17 +674,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="748" max-vertical-offset="4097">
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -736,17 +698,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2018" max-vertical-offset="2975">
+          <caret line="127" column="8" selection-start-line="127" selection-start-column="8" selection-end-line="127" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -754,6 +714,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="680">
           <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1114" max-vertical-offset="1955">
+          <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
           <folding />
         </state>
       </provider>
@@ -766,10 +734,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readdata.py">
+    <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="111" max-vertical-offset="1717">
+          <caret line="26" column="90" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -782,10 +750,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="1632">
+          <caret line="58" column="23" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/readdata.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="1632">
+          <caret line="61" column="43" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readdata.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1445">
+          <caret line="27" column="48" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -794,6 +794,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="680">
           <caret line="20" column="15" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="136">
+          <caret line="2" column="8" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -812,38 +820,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/peakdetect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="224" max-vertical-offset="1955">
-          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
-          <folding>
-            <element signature="e#3599#15668#0" expanded="false" />
-            <element signature="e#4150#4492#0" expanded="false" />
-            <element signature="e#4518#5135#0" expanded="false" />
-            <element signature="e#5179#7708#0" expanded="false" />
-            <element signature="e#7762#8686#0" expanded="false" />
-            <element signature="e#8738#9319#0" expanded="false" />
-            <element signature="e#9556#14042#0" expanded="false" />
-            <element signature="e#15686#19294#0" expanded="false" />
-            <element signature="e#19324#19810#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ocv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58979595" vertical-offset="0" max-vertical-offset="490">
-          <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
-          <folding>
-            <element signature="e#23#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/readdata.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41020408" vertical-offset="88" max-vertical-offset="595">
-          <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="20" max-vertical-offset="595">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/peakdetect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="8225" max-vertical-offset="8738">
+          <caret line="501" column="0" selection-start-line="501" selection-start-column="0" selection-end-line="501" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9081081" vertical-offset="8183" max-vertical-offset="9282">
+          <caret line="518" column="34" selection-start-line="518" selection-start-column="34" selection-end-line="518" selection-end-column="34" />
           <folding />
         </state>
       </provider>
