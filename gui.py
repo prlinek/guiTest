@@ -476,7 +476,7 @@ Below are function declarations
         print "second step - done!"
 
         # second method
-        gap = 2
+        # gap = 2
         # xdata_peak = xdata_peak[0::gap][:]
         # ydata_peak = ydata_peak[0::gap][:]
         # out_loop_len = out_loop_len / gap
@@ -524,45 +524,22 @@ Below are function declarations
 
         print "third step - done!"
 
-        plt.figure(4)
-        plt.subplot(2, 1, 1)
         for i in range(out_loop_len):
             ones3 = i * np.ones(len(ridge[i, :]))
             data_num3.append(ones3)
-            for j in range(len(ridge[i])):
-                plt.plot(ridge[i, j], data_num3[i][j], '+')
 
-        # xdata = rd.x[0][:, 0]
-        # ydata = []
-        # zdata = []
-        # loop_len = len(self.list_of_files)
-        # appendy = ydata.append
-        # appendz = zdata.append
-        # # for t in enumerate(self.list_of_files):
-        # for t in range(loop_len):
-        #     appendy(rd.x[t][:, 1])
-        #     appendz(t)
-        # # creating a mesh of size newxdata X newzdata
-        # newxdata, newzdata = np.meshgrid(xdata, zdata)
-        # # masking data so colorbar can be used
-        # ydata = np.ma.array(ydata)
-        # plt.pcolormesh(newxdata, newzdata, ydata)
-        # plt.set_cmap('binary')
-
-        print "fourth step - done!"
+        plt.figure('Peak tracker')
+        # peak wavelength vs data no
+        plt.subplot(2, 1, 1)
+        plt.plot(ridge, data_num3, '+')
         plt.xlim([500, 1000])
         plt.xlabel('wavelength')
         plt.ylabel('data no.')
         plt.grid()
         plt.tight_layout()
-        # plt.show(block=False)
-
+        # peak intensity vs data no
         plt.subplot(2, 1, 2)
-        for i in range(out_loop_len):
-            ones3 = i * np.ones(len(ridge[i, :]))
-            data_num3.append(ones3)
-            for j in range(len(ridge[i])):
-                plt.plot(ridge_y[i, j], data_num3[i][j], '+')
+        plt.plot(ridge_y, data_num3, '+')
         plt.xlim(xmin=500)
         plt.xlabel('intensity')
         plt.ylabel('data no.')
